@@ -8,6 +8,9 @@ db.mongoose = mongoose
 db.url = dbConfig.url
 
 db.role = require("./role.model")(mongoose)
+db.patient = require("./patient.model")(mongoose)
+db.user = require("./user.model")(mongoose)
+db.appointment = require("./appointment.model")(mongoose)
 
 db.ROLES = ["frontdest", "admin", "doctor"];
 

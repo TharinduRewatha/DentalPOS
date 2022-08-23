@@ -65,10 +65,12 @@ function initial() {
 }
 
 
-
+require("./Routes/user.route")(app)
+//require("./Routes/patient.route")(app)
+require("./Routes/appointment.route")(app)
 
 app.get("/", (req, res) => {
-    res.json("Welcome DentalPOS")
+    res.json("Welcome to DentalPOS")
 })
 const PORT = process.env.PORT || 8096
 app.listen(PORT, () => {
