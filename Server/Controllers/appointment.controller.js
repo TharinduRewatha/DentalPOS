@@ -20,8 +20,9 @@ exports.create = (req, res) => {
     })
     appointment
         .save(appointment)
-        .then(itemData => {
+        .then(appData => {
             //SMS API
+            res.send(appData)
         })
         .catch((err) => {
             res.status(500).send({
