@@ -13,7 +13,7 @@ module.exports = (app) => {
 
     router.get("/all", appointment.findAll)
 
-    router.get("/namebyid/:appId", appointment.AppointmentFromId)
+    router.get("/namebyid/:aId", appointment.AppointmentFromId)
 
     router.get("/name/:patName", appointment.findByName)
 

@@ -67,7 +67,7 @@ exports.findAll = (req, res) => {
 }
 
 exports.AppointmentFromId = (req, res) => {
-    const appId = req.params.appId
+    const appId = req.params.aId
 
     Appointment.find({ appId: appId })
         .then(data => {
