@@ -69,7 +69,7 @@ exports.findAll = (req, res) => {
 exports.AppointmentFromId = (req, res) => {
     const appId = req.params.aId
 
-    Appointment.find({ _idd: appId })
+    Appointment.find({ _id: appId })
         .then(data => {
             let appointment = {
                 patName: data[0].patName,
