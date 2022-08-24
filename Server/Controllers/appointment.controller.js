@@ -126,12 +126,12 @@ exports.update = (req, res) => {
                 res.send(true);
 
             } else res.status(404).send({
-                message: `Cannot update Appointment with id=${id}. Maybe Appointment was not found!`
+                message: `Cannot update Appointment with id=${appId}. Maybe Appointment was not found!`
             });
         })
         .catch(err => {
             res.status(500).send({
-                message: "Error updating Appointment with id=" + id
+                message: "Error updating Appointment with id=" + appId
             })
         })
 }
