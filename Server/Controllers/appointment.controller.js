@@ -76,6 +76,7 @@ exports.AppointmentFromId = (req, res) => {
                 phoneNumber:data[0].phoneNumber,
                 time:data[0].time,
                 date:data[0].date,
+                _active:data[0]._active,
             };
             res.send(appointment)
         })
@@ -148,10 +149,16 @@ exports.DeleteFromAppointmentId = (req, res) => {
 exports.SearchAppWithDate = (req, res) =>{
     const date = req.param.date
 
-    Appointment.find({ date: date })
+    Appointment.find({ _id: date })
     .then(data => {
-
-        res.send(data)
+        let appointment = {
+            patName: data[0].patName,
+            phoneNumber:data[0].phoneNumber,
+            time:data[0].time,
+            date:data[0].date,
+            _active:data[0]._active,
+        };
+        res.send(appointment)
     })
     .catch(err => {
         res.status(500).send({
