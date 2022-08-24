@@ -75,6 +75,7 @@ exports.AppointmentFromId = (req, res) => {
                 patName: data[0].patName,
                 phoneNumber:data[0].phoneNumber,
                 time:data[0].time,
+                date:data[0].date,
             };
             res.send(appointment)
         })
