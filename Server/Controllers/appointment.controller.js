@@ -106,7 +106,7 @@ exports.update = (req, res) => {
 
     Appointment.findByIdAndUpdate(id, req.body, { useFindAndModify: false })
         .then(data => {
-            Item.findOneAndUpdate({ _id: id }, { $set: req.body })
+            Appointment.findOneAndUpdate({ _id: id }, { $set: req.body })
                 .then(data => {
 
                     if (data) {
