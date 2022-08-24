@@ -147,9 +147,13 @@ exports.DeleteFromAppointmentId = (req, res) => {
 }
 
 exports.SearchAppWithDate = (req, res) =>{
-    const date = req.param.date
+    const date = req.params.date;
+    var condition = date ? {
+        date: date,
+        _active: true,
+    } : {};
 
-    Appointment.find({ _id: date })
+    Appointment.find(condition)
     .then(data => {
         let appointment = {
             patName: data[0].patName,
