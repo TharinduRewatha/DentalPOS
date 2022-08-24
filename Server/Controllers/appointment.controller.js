@@ -150,13 +150,8 @@ exports.SearchAppWithDate = (req, res) =>{
 
     Appointment.find({ date: date })
     .then(data => {
-        let appointment = {
-            patName: data[0].patName,
-            phoneNumber:data[0].phoneNumber,
-            time:data[0].time,
-            date:data[0].date,
-        };
-        res.send(appointment)
+
+        res.send(data)
     })
     .catch(err => {
         res.status(500).send({
