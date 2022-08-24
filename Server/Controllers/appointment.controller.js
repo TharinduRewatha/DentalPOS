@@ -20,8 +20,9 @@ exports.create = (req, res) => {
     })
     appointment
         .save(appointment)
-        .then(itemData => {
+        .then(appData => {
             //SMS API
+            res.send(appData)
         })
         .catch((err) => {
             res.status(500).send({
@@ -68,12 +69,12 @@ exports.findAll = (req, res) => {
 exports.AppointmentFromId = (req, res) => {
     const appId = req.params.appId
 
-    Appointment.find({ _id: appId })
+    Appointment.find({ appId: appId })
         .then(data => {
             let appointment = {
                 patName: data[0].patName,
             };
-            res.send(patient)
+            res.send(appointment)
         })
         .catch(err => {
             res.status(500).send({
