@@ -12,7 +12,7 @@ exports.create = (req, res) => {
     const appointment = new Appointment({
         patName: req.body.patName,
         phoneNumber: req.body.phoneNumber,
-        date: req.body.dob,
+        date: req.body.date,
         time: req.body.time,
         appId : req.body.appId,
         _active: true
