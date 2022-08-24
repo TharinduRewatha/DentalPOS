@@ -144,3 +144,23 @@ exports.DeleteFromAppointmentId = (req, res) => {
             })
         })
 }
+
+exports.SearchAppWithDate = (req, res) =>{
+    const date = req.param.date
+
+    Appointment.find({ date: date })
+    .then(data => {
+        let appointment = {
+            patName: data[0].patName,
+            phoneNumber:data[0].phoneNumber,
+            time:data[0].time,
+            date:data[0].date,
+        };
+        res.send(appointment)
+    })
+    .catch(err => {
+        res.status(500).send({
+            message: err.message || "Some error occurred while retrieving appointments."
+        })
+    })
+}

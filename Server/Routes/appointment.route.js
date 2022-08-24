@@ -17,5 +17,7 @@ module.exports = (app) => {
 
     router.get("/name/:patName", appointment.findByName)
 
+    router.get("/appbydate/:date",appointment.SearchAppWithDate)
+
     app.use("/api/appointment", router)
 };
