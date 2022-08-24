@@ -9,7 +9,6 @@ module.exports = (app) => {
 
     router.put("/:iId", appointment.update)
 
-
     router.get("/", appointment.findAllActive)
 
     router.get("/all", appointment.findAll)

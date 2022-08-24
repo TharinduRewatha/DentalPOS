@@ -102,23 +102,23 @@ exports.update = (req, res) => {
         });
     }
 
-    const id = req.params.appId;
+    const appId = req.params.appId;
 
-    Appointment.findByIdAndUpdate(id, req.body, { useFindAndModify: false })
+    Appointment.findByIdAndUpdate(appId, req.body, { useFindAndModify: false })
         .then(data => {
-            Appointment.findOneAndUpdate({ _id: id }, { $set: req.body })
+            Appointment.findOneAndUpdate({ appId: appId }, { $set: req.body })
                 .then(data => {
 
                     if (data) {
                         res.send(true);
 
                     } else res.status(404).send({
-                        message: `Cannot update appointment with sfName`,
+                        message: `Cannot update appointment with id=${appId}`,
                     });
                 })
                 .catch((err) => {
                     res.status(500).send({
-                        message: "Error updating appointment with sfNamef"
+                        message: `Error updating appointment with id=${appId}`
                     })
                 })
 
