@@ -101,40 +101,26 @@ exports.update = (req, res) => {
             message: "Data to update can not be empty!"
         });
     }
+    const id = req.params.appId;
 
-    const appId = req.params.appId;
+    Appointment.findOneAndUpdate({ id: id }, { $set: req.body })
+    .then(data => {
 
-    Appointment.findByIdAndUpdate(appId, req.body, { useFindAndModify: false })
-        .then(data => {
-            Appointment.findOneAndUpdate({ appId: appId }, { $set: req.body })
-                .then(data => {
+    if (data) {
+    res.send(true);
 
-                    if (data) {
-                        res.send(true);
+    } else 
+        res.status(404).send({
+            message: `Cannot update appointment with id=${id}`,
+        });
+    })
+    .catch((err) => {
+        res.status(500).send({
+            message: `Error updating appointment with id=${id}`
+         });
+    });
+};
 
-                    } else res.status(404).send({
-                        message: `Cannot update appointment with id=${appId}`,
-                    });
-                })
-                .catch((err) => {
-                    res.status(500).send({
-                        message: `Error updating appointment with id=${appId}`
-                    })
-                })
-
-            if (data) {
-                res.send(true);
-
-            } else res.status(404).send({
-                message: `Cannot update Appointment with id=${appId}. Maybe Appointment was not found!`
-            });
-        })
-        .catch(err => {
-            res.status(500).send({
-                message: "Error updating Appointment with id=" + appId
-            })
-        })
-}
 
 exports.DeleteFromAppointmentId = (req, res) => {
     const Id = req.params.appId

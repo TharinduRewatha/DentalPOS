@@ -5,9 +5,9 @@ module.exports = (app) => {
 
     router.post("/",appointment.create)
 
-    router.delete("/:iId", appointment.DeleteFromAppointmentId)
+    router.delete("/:appId", appointment.DeleteFromAppointmentId)
 
-    router.put("/:iId", appointment.update)
+    router.put("/:appId", appointment.update)
 
     router.get("/", appointment.findAllActive)
 
