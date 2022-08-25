@@ -9,8 +9,9 @@ import { Location } from '@angular/common';
 
 //MODALS
 export class appointment {
-  name: string;
-  mnumber: string;
+  patName: string;
+  phoneNumber: string;
+  date: string;
 }
 
 @Injectable({
@@ -18,7 +19,7 @@ export class appointment {
 })
 export class ApiCallsService {
 
-  appointmentsEndpoint = 'http://localhost:8096/api/item/';
+  appointmentsEndpoint = 'http://localhost:8096/api/appointment/all';
 
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -36,8 +37,8 @@ export class ApiCallsService {
     return this.httpClient.get(this.appointmentsEndpoint)
   }
 
-  createAppointment(item: appointment): Observable<any> {
-    return this.httpClient.post<appointment>(this.appointmentsEndpoint, JSON.stringify(item), this.httpOptions)
+  createAppointment(appointment: appointment): Observable<any> {
+    return this.httpClient.post<appointment>(this.appointmentsEndpoint, JSON.stringify(appointment), this.httpOptions)
   }
 
   

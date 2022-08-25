@@ -3,8 +3,7 @@ import { CalendarComponent } from 'ionic2-calendar';
 import { AlertController, ModalController } from '@ionic/angular';
 import { formatDate } from '@angular/common';
 import { CalModalPage } from '../modals/cal-modal/cal-modal.page';
-import { ApiCallsService } from 'src/app/services/api-calls.service';
-import { CalendarMode } from 'ionic2-calendar/calendar';
+import { ApiCallsService, appointment } from 'src/app/services/api-calls.service';
 
 @Component({
   selector: 'app-appointments',
@@ -26,6 +25,12 @@ export class AppointmentsPage implements OnInit {
 
   //Api related variable
   returnedAppointments = [];
+
+  _appointment:appointment = {
+    patName:"",
+    phoneNumber:"",
+    date:""
+  }
   //end
 
   constructor(
@@ -35,8 +40,9 @@ export class AppointmentsPage implements OnInit {
     public apicalls: ApiCallsService,
   ) {}
 
-  ngOnInit() {}
-
+  ngOnInit() {
+    this.getAppointments();
+  }
 
   //API calls service region
 
@@ -45,10 +51,26 @@ export class AppointmentsPage implements OnInit {
       .subscribe(
         (response) => {
           this.returnedAppointments = response;
+          console.log(this.returnedAppointments);
         },
         (error) => {
           console.error('Request failed with error');
         });
+  }
+
+  createAppointment(patName:string,mobile:string,date:string){
+    this._appointment.patName = patName;
+    this._appointment.phoneNumber = mobile;
+    this._appointment.date = date;
+
+    this.apicalls.createAppointment(this._appointment)
+      .subscribe(
+        (response) => {                         
+          console.log(response);
+        },
+        (error) => {          
+          console.error('Request failed with error');
+        })
   }
 
   //End region
@@ -82,66 +104,7 @@ export class AppointmentsPage implements OnInit {
     alert.present();
   }
 
-  createRandomEvents() {
-    const events = [];
-    for (let i = 0; i < 50; i += 1) {
-      const date = new Date();
-      const eventType = Math.floor(Math.random() * 2);
-      const startDay = Math.floor(Math.random() * 90) - 45;
-      let endDay = Math.floor(Math.random() * 2) + startDay;
-      let startTime: Date;
-      let endTime: Date;
-      if (eventType === 0) {
-        startTime = new Date(
-          Date.UTC(
-            date.getUTCFullYear(),
-            date.getUTCMonth(),
-            date.getUTCDate() + startDay
-          )
-        );
-        if (endDay === startDay) {
-          endDay += 1;
-        }
-        endTime = new Date(
-          Date.UTC(
-            date.getUTCFullYear(),
-            date.getUTCMonth(),
-            date.getUTCDate() + endDay
-          )
-        );
-        events.push({
-          title: 'All Day - ' + i,
-          startTime,
-          endTime,
-          allDay: true,
-        });
-      } else {
-        let startMinute = Math.floor(Math.random() * 24 * 60);
-        let endMinute = Math.floor(Math.random() * 180) + startMinute;
-        startTime = new Date(
-          date.getFullYear(),
-          date.getMonth(),
-          date.getDate() + startDay,
-          0,
-          date.getMinutes() + startMinute
-        );
-        endTime = new Date(
-          date.getFullYear(),
-          date.getMonth(),
-          date.getDate() + endDay,
-          0,
-          date.getMinutes() + endMinute
-        );
-        events.push({
-          title: 'Event - ' + i,
-          startTime,
-          endTime,
-          allDay: false,
-        });
-      }
-    }
-    this.eventSource = events;
-  }
+
 
   removeEvents() {
     this.eventSource = [];
@@ -158,25 +121,13 @@ export class AppointmentsPage implements OnInit {
    
     modal.onDidDismiss().then((result) => {
       if (result.data && result.data.event) {
-        let event = result.data.event;
-        if (event.allDay) {
-          let start = event.startTime;
-          event.startTime = new Date(
-            Date.UTC(
-              start.getUTCFullYear(),
-              start.getUTCMonth(),
-              start.getUTCDate()
-            )
-          );
-          event.endTime = new Date(
-            Date.UTC(
-              start.getUTCFullYear(),
-              start.getUTCMonth(),
-              start.getUTCDate() + 1
-            )
-          );
-        }
-        this.eventSource.push(result.data.event);
+        this.eventSource.push({
+          title: result.data.event.patName,
+          startTime: result.data.event.startTime,
+          endTime: result.data.event.endTime,
+          allDay: false,
+        });
+        this.createAppointment(result.data.event.patName,result.data.event.phoneNumber,result.data.event.date);
         this.myCal.loadEvents();
       }
     });

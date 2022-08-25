@@ -14,21 +14,33 @@
  
 <ion-content>
   <ion-item>
-    <ion-label position="stacked">Title</ion-label>
-    <ion-input tpye="text" [(ngModel)]="event.title"></ion-input>
+    <ion-label position="stacked">Patient Name</ion-label>
+    <ion-input tpye="text" [(ngModel)]="event.patName"></ion-input>
   </ion-item>
   <ion-item>
-    <ion-label position="stacked">Description</ion-label>
-    <ion-input tpye="text" [(ngModel)]="event.desc"></ion-input>
+    <ion-label position="stacked">Mobile Number</ion-label>
+    <ion-input tpye="text" [(ngModel)]="event.phoneNumber"></ion-input>
   </ion-item>
+
+  <ion-segment [(ngModel)]="calendar.mode">
+    <ion-segment-button value="month">
+      <ion-label>Month</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="week">
+      <ion-label>Week</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="day">
+      <ion-label>Day</ion-label>
+    </ion-segment-button>
+  </ion-segment>
  
   <calendar
     *ngIf="modalReady"
     [calendarMode]="calendar.mode"
     [currentDate]="calendar.currentDate"
     (onTitleChanged)="onViewTitleChanged($event)"
-    (onTimeSelected)="onTimeSelected($event)"
     lockSwipes="true"
+    (onTimeSelected)="onDateSelected($event)"
   >
   </calendar>
 </ion-content>

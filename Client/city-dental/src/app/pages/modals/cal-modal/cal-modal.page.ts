@@ -8,17 +8,18 @@ import { ModalController } from '@ionic/angular';
 })
 export class CalModalPage implements AfterViewInit {
   calendar = {
-    mode: 'month',
+    mode: 'week',
     currentDate: new Date()
   };
   viewTitle: string;
   
   event = {
-    title: '',
-    desc: '',
+    patName: '',
+    phoneNumber: '',
+    Date:null,
     startTime: null,
-    endTime: '',
-    allDay: true
+    endTime: null,
+    allDay: false
   };
  
   modalReady = false;
@@ -45,5 +46,31 @@ export class CalModalPage implements AfterViewInit {
  
   close() {
     this.modalCtrl.dismiss();
+  }
+
+  onDateSelected(event) {
+    const date = new Date(event.selectedTime);
+    let startTime: Date;
+    let endTime: Date;
+    let startMinute = date.getHours() * 60;
+    let endMinute = 30 + startMinute;
+    startTime = new Date(
+       date.getFullYear(),
+        date.getMonth(),
+        date.getDate(),
+          0,
+        date.getMinutes() + startMinute
+      );
+      endTime = new Date(
+          date.getFullYear(),
+          date.getMonth(),
+          date.getDate(),
+          0,
+          date.getMinutes() + endMinute
+        );
+      console.log(endTime);
+      this.event.startTime = startTime;
+      this.event.endTime = endTime;
+      this.event.Date = startTime;
   }
 }
