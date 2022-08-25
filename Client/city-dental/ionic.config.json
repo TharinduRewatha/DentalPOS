@@ -1,0 +1,7 @@
+{
+  "name": "city dental",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
