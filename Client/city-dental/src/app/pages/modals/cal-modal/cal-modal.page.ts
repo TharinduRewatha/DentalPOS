@@ -1,5 +1,7 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { ModalController } from '@ionic/angular';
+import { CalendarComponent } from 'ionic2-calendar';
+import {ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'app-cal-modal',
@@ -21,15 +23,26 @@ export class CalModalPage implements AfterViewInit {
     endTime: null,
     allDay: false
   };
+
+  alldayLabel:any = ""
  
   modalReady = false;
+
+  @ViewChild(CalendarComponent) myCal: CalendarComponent;
  
-  constructor(private modalCtrl: ModalController) { }
+  constructor(
+    private modalCtrl: ModalController,
+    private cdref: ChangeDetectorRef
+    ) { }
  
   ngAfterViewInit() {
     setTimeout(() => {
       this.modalReady = true;      
     }, 0);
+  }
+
+  ngAfterContentChecked() {
+    this.cdref.detectChanges();  
   }
  
   save() {    
@@ -38,6 +51,7 @@ export class CalModalPage implements AfterViewInit {
  
   onViewTitleChanged(title) {
     this.viewTitle = title;
+    this.cdref.detectChanges();
   }
  
   onTimeSelected(ev) {    
@@ -46,6 +60,15 @@ export class CalModalPage implements AfterViewInit {
  
   close() {
     this.modalCtrl.dismiss();
+  }
+
+   // Change current month/week/day
+   next() {
+    this.myCal.slideNext();
+  }
+
+  back() {
+    this.myCal.slidePrev();
   }
 
   onDateSelected(event) {
@@ -68,7 +91,6 @@ export class CalModalPage implements AfterViewInit {
           0,
           date.getMinutes() + endMinute
         );
-      console.log(endTime);
       this.event.startTime = startTime;
       this.event.endTime = endTime;
       this.event.Date = startTime;

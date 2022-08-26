@@ -4,7 +4,7 @@
       <ion-icon name="close" slot="icon-only"></ion-icon>
     </ion-button>
   </ion-buttons>
-  <ion-title>{{ viewTitle }}</ion-title>
+  <!-- <ion-title>{{ viewTitle }}</ion-title> -->
   <ion-buttons slot="end">
     <ion-button (click)="save()">
       <ion-icon name="checkmark" slot="icon-only"></ion-icon>
@@ -14,13 +14,37 @@
  
 <ion-content>
   <ion-item>
-    <ion-label position="stacked">Patient Name</ion-label>
+    <ion-label style="font-weight: bold;" position="stacked">Patient Name</ion-label>
     <ion-input tpye="text" [(ngModel)]="event.patName"></ion-input>
   </ion-item>
   <ion-item>
-    <ion-label position="stacked">Mobile Number</ion-label>
+    <ion-label style="font-weight: bold;" position="stacked">Mobile Number</ion-label>
     <ion-input tpye="text" [(ngModel)]="event.phoneNumber"></ion-input>
   </ion-item>
+  <ion-item>
+    <ion-label position="stacked" style="font-weight: bold;">Appointment Date</ion-label>
+    <ion-label position="stacked">{{event.startTime}}</ion-label>
+  </ion-item>
+
+  <ion-row>
+    <!-- Move back one screen of the slides -->
+    <ion-col size="2">
+      <ion-button fill="clear" (click)="back()">
+        <ion-icon name="arrow-back" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-col>
+ 
+    <ion-col size="8" class="ion-text-center">
+      <h5>{{ viewTitle }}</h5>
+    </ion-col>
+ 
+    <!-- Move forward one screen of the slides -->
+    <ion-col size="2">
+      <ion-button fill="clear" (click)="next()">
+        <ion-icon name="arrow-forward" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-col>
+  </ion-row>
 
   <ion-segment [(ngModel)]="calendar.mode">
     <ion-segment-button value="month">
@@ -39,8 +63,12 @@
     [calendarMode]="calendar.mode"
     [currentDate]="calendar.currentDate"
     (onTitleChanged)="onViewTitleChanged($event)"
-    lockSwipes="true"
     (onTimeSelected)="onDateSelected($event)"
+    [allDayLabel]="alldayLabel"
+    startHour= "6"
+    endHour= "25"
+    step="30"
+    startingDayWeek="1"
   >
   </calendar>
 </ion-content>
