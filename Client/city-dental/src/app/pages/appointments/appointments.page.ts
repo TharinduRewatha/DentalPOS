@@ -5,6 +5,7 @@ import { formatDate } from '@angular/common';
 import { CalModalPage } from '../modals/cal-modal/cal-modal.page';
 import { ApiCallsService, appointment } from 'src/app/services/api-calls.service';
 import { CalendarMode } from 'ionic2-calendar/calendar';
+import * as e from 'express';
 
 @Component({
   selector: 'app-appointments',
@@ -16,11 +17,9 @@ export class AppointmentsPage implements OnInit {
   viewTitle: string;
 
   calendar = {
-    mode: "month",
+    mode: "month" as CalendarMode,
     currentDate: new Date(),
   };
-
-  mode:CalendarMode = "month";
 
   selectedDate: Date;
   alldayLabel:any = ""
@@ -55,7 +54,37 @@ export class AppointmentsPage implements OnInit {
       .subscribe(
         (response) => {
           this.returnedAppointments = response;
-          console.log(this.returnedAppointments);
+          
+          this.returnedAppointments.forEach(e => {
+            const date = new Date(e.date);
+            let startTime: Date;
+            let endTime: Date;
+            let startMinute = date.getHours() * 60;
+            let endMinute = 30 + startMinute;
+            startTime = new Date(
+              date.getFullYear(),
+              date.getMonth(),
+              date.getDate(),
+              0,
+              date.getMinutes() + startMinute
+            );
+            endTime = new Date(
+              date.getFullYear(),
+              date.getMonth(),
+              date.getDate(),
+              0,
+              date.getMinutes() + endMinute
+          );
+            
+           this.eventSource.push({
+              title: e.patName,
+              startTime: startTime,
+              endTime: endTime,
+              allDay: false,
+              desc:e.phoneNumber
+            });
+          });
+          this.myCal.loadEvents();
         },
         (error) => {
           console.error('Request failed with error');
@@ -70,11 +99,21 @@ export class AppointmentsPage implements OnInit {
     this.apicalls.createAppointment(this._appointment)
       .subscribe(
         (response) => {                         
-          console.log(response);
+          //console.log(response);
         },
         (error) => {          
           console.error('Request failed with error');
         })
+    
+    let smsNumber = "94" + mobile.substring(1);
+    this.apicalls.sendSMS(smsNumber,"test msg")
+        .subscribe(
+          (response) => {
+            //console.log(response);
+          },
+          (error) => {
+            console.error('Request failed with error');
+          });
   }
 
   //End region
@@ -94,7 +133,7 @@ export class AppointmentsPage implements OnInit {
   }
 
   // Calendar event was clicked
-  async onEventSelected(event: { startTime: string | number | Date; endTime: string | number | Date; title: any; desc: any; }) {
+  async onEventSelected(event) {
     // Use Angular date pipe for conversion
     const start = formatDate(event.startTime, 'medium', this.locale);
     const end = formatDate(event.endTime, 'medium', this.locale);
@@ -130,8 +169,9 @@ export class AppointmentsPage implements OnInit {
           startTime: result.data.event.startTime,
           endTime: result.data.event.endTime,
           allDay: false,
+          desc: result.data.event.phoneNumber,
         });
-        this.createAppointment(result.data.event.patName,result.data.event.phoneNumber,result.data.event.date);
+        this.createAppointment(result.data.event.patName,result.data.event.phoneNumber,result.data.event.Date);
         this.myCal.loadEvents();
       }
     });

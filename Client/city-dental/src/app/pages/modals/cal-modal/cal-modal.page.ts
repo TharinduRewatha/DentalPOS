@@ -11,12 +11,12 @@ import { CalendarMode } from 'ionic2-calendar/calendar';
 })
 export class CalModalPage implements AfterViewInit {
   calendar = {
-    mode: 'week',
+    mode: 'week' as CalendarMode,
     currentDate: new Date()
   };
   viewTitle: string;
 
-  mode:CalendarMode = "week";
+  selectedDate;
   
   event = {
     patName: '',
@@ -74,8 +74,8 @@ export class CalModalPage implements AfterViewInit {
     this.myCal.slidePrev();
   }
 
-  onDateSelected(event) {
-    const date = new Date(event.selectedTime);
+  onDateSelected() {
+    const date = new Date(this.selectedDate);
     let startTime: Date;
     let endTime: Date;
     let startMinute = date.getHours() * 60;
@@ -93,9 +93,13 @@ export class CalModalPage implements AfterViewInit {
           date.getDate(),
           0,
           date.getMinutes() + endMinute
-        );
+      );
       this.event.startTime = startTime;
       this.event.endTime = endTime;
       this.event.Date = startTime;
+  }
+
+  getDate(){
+    console.log(this.selectedDate);
   }
 }

@@ -22,49 +22,15 @@
     <ion-input tpye="text" [(ngModel)]="event.phoneNumber"></ion-input>
   </ion-item>
   <ion-item>
-    <ion-label position="stacked" style="font-weight: bold;">Appointment Date</ion-label>
+    <ion-label position="stacked" style="font-weight: bold;">Appointment Date (select from the calendar)</ion-label>
     <ion-label position="stacked">{{event.startTime}}</ion-label>
+    <br/>
   </ion-item>
 
-  <ion-row>
-    <!-- Move back one screen of the slides -->
-    <ion-col size="2">
-      <ion-button fill="clear" (click)="back()">
-        <ion-icon name="arrow-back" slot="icon-only"></ion-icon>
-      </ion-button>
-    </ion-col>
- 
-    <ion-col size="8" class="ion-text-center">
-      <h5>{{ viewTitle }}</h5>
-    </ion-col>
- 
-    <!-- Move forward one screen of the slides -->
-    <ion-col size="2">
-      <ion-button fill="clear" (click)="next()">
-        <ion-icon name="arrow-forward" slot="icon-only"></ion-icon>
-      </ion-button>
-    </ion-col>
-  </ion-row>
+  <br/>
 
-  <!-- <ion-segment [(ngModel)]="calendar.mode">
-    <ion-segment-button value="month">
-      <ion-label>Month</ion-label>
-    </ion-segment-button>
-    <ion-segment-button value="week">
-      <ion-label>Week</ion-label>
-    </ion-segment-button>
-    <ion-segment-button value="day">
-      <ion-label>Day</ion-label>
-    </ion-segment-button>
-  </ion-segment> -->
- 
-  <calendar
-    *ngIf="modalReady"
-    [calendarMode]="mode"
-    [currentDate]="calendar.currentDate"
-    (onTitleChanged)="onViewTitleChanged($event)"
-    (onTimeSelected)="onDateSelected($event)"
-    [allDayLabel]="alldayLabel"
-  >
-  </calendar>
+  <div style="margin-left: 20%;">
+    <ion-datetime [(ngModel)]="selectedDate" (ionChange)="onDateSelected()"></ion-datetime>
+  </div>
+
 </ion-content>
