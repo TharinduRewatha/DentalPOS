@@ -4,6 +4,7 @@ import { AlertController, ModalController } from '@ionic/angular';
 import { formatDate } from '@angular/common';
 import { CalModalPage } from '../modals/cal-modal/cal-modal.page';
 import { ApiCallsService, appointment } from 'src/app/services/api-calls.service';
+import { CalendarMode } from 'ionic2-calendar/calendar';
 
 @Component({
   selector: 'app-appointments',
@@ -19,7 +20,10 @@ export class AppointmentsPage implements OnInit {
     currentDate: new Date(),
   };
 
+  mode:CalendarMode = "month";
+
   selectedDate: Date;
+  alldayLabel:any = ""
 
   @ViewChild(CalendarComponent) myCal: CalendarComponent;
 

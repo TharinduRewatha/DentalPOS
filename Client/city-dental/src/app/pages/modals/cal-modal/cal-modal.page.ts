@@ -2,6 +2,7 @@ import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { CalendarComponent } from 'ionic2-calendar';
 import {ChangeDetectorRef } from '@angular/core';
+import { CalendarMode } from 'ionic2-calendar/calendar';
 
 @Component({
   selector: 'app-cal-modal',
@@ -14,6 +15,8 @@ export class CalModalPage implements AfterViewInit {
     currentDate: new Date()
   };
   viewTitle: string;
+
+  mode:CalendarMode = "week";
   
   event = {
     patName: '',

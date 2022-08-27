@@ -46,7 +46,7 @@
     </ion-col>
   </ion-row>
 
-  <ion-segment [(ngModel)]="calendar.mode">
+  <!-- <ion-segment [(ngModel)]="calendar.mode">
     <ion-segment-button value="month">
       <ion-label>Month</ion-label>
     </ion-segment-button>
@@ -56,19 +56,15 @@
     <ion-segment-button value="day">
       <ion-label>Day</ion-label>
     </ion-segment-button>
-  </ion-segment>
+  </ion-segment> -->
  
   <calendar
     *ngIf="modalReady"
-    [calendarMode]="calendar.mode"
+    [calendarMode]="mode"
     [currentDate]="calendar.currentDate"
     (onTitleChanged)="onViewTitleChanged($event)"
     (onTimeSelected)="onDateSelected($event)"
     [allDayLabel]="alldayLabel"
-    startHour= "6"
-    endHour= "25"
-    step="30"
-    startingDayWeek="1"
   >
   </calendar>
 </ion-content>
