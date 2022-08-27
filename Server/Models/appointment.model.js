@@ -14,7 +14,6 @@ module.exports = (mongoose) => {
         phoneNumber: String,
         appId : Number,
         date: Date,
-        time: String,
         _active: Boolean
     })
 
