@@ -35,6 +35,25 @@ export class ApiCallsService {
     private location: Location
   ) { }
 
+  //General components region
+  async presentLoading(messageLoading) {
+    const loading = await this.loadingController.create({
+      message: messageLoading,
+      duration: 1000
+    });
+    await loading.present();
+  }
+
+  async presentAlert(message:string){
+    const alert = await this.alertcontroller.create({
+      message : message,
+      buttons : ['ok']
+    });
+
+    await alert.present();
+  }
+  //End region
+
   getAppointments(): Observable<any> {
     return this.httpClient.get(this.appointmentsEndpoint+"all")
   }

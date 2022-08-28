@@ -53,6 +53,7 @@ export class AppointmentsPage implements OnInit {
   //API calls service region
 
   getAppointments(){
+    this.apicalls.presentLoading("Loading");
     this.apicalls.getAppointments()
       .subscribe(
         (response) => {
@@ -89,6 +90,7 @@ export class AppointmentsPage implements OnInit {
             });
           });
           this.myCal.loadEvents();
+          this.apicalls.loadingController.getTop().then(v => v ? this.apicalls.loadingController.dismiss() : null);
         },
         (error) => {
           console.error('Request failed with error');
@@ -101,10 +103,13 @@ export class AppointmentsPage implements OnInit {
     this._appointment.date = date;
     this._appointment.doctor = doctor;
 
+    this.apicalls.presentLoading("creating appointment");
+
     this.apicalls.createAppointment(this._appointment)
       .subscribe(
         (response) => {                         
           this.getAppointments();
+          this.apicalls.loadingController.dismiss();
         },
         (error) => {          
           console.error('Request failed with error');
@@ -148,14 +153,14 @@ export class AppointmentsPage implements OnInit {
 
     if(JSON.parse(splitted[3]) == true){
       const alert = await this.alertCtrl.create({
-        message: "Patient Name : " + event.title + '<br><br>' + "Mobile Number : " + splitted[0] + '<br><br>' +'Time: ' + splittedTime[2] + '<br><br>' +'IsAttended: ' + splitted[3],
+        message: "Patient Name : " + event.title + '<br><br>' + "Mobile Number : " + splitted[0] + '<br><br>' +'Time: ' + splittedTime[2] + '<br><br>' +'Patient Attended: ' + "Yes",
         cssClass: 'alert_css',
         buttons: ['Cancel'],
       });
       alert.present();
     }else{
       const alert = await this.alertCtrl.create({
-        message: "Patient Name : " + event.title + '<br><br>' + "Mobile Number : " + splitted[0] + '<br><br>' +'Time: ' + splittedTime[2] + '<br><br>' +'IsAttended: ' + splitted[3],
+        message: "Patient Name : " + event.title + '<br><br>' + "Mobile Number : " + splitted[0] + '<br><br>' +'Time: ' + splittedTime[2] + '<br><br>' +'Patient Attended: ' + "No",
         cssClass: 'alert_css',
         buttons: [
           {
