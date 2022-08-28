@@ -15,6 +15,8 @@ exports.create = (req, res) => {
         date: req.body.date,
         time: req.body.time,
         appId : req.body.appId,
+        attended : req.body.attended,
+        doctor : req.body.doctor,
         _active: true
 
     })
