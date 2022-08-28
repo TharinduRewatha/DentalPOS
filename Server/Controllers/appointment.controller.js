@@ -171,3 +171,37 @@ exports.SearchAppWithDate = (req, res) =>{
         })
     })
 }
+
+exports.updateTheAttendedStatus = (req, res) => {
+
+    const appId = req.params.aId;
+
+    Appointment.findOneAndUpdate({ _id: appId },{ $set: { attended: true } })
+    .then(data => {
+
+    if (data) {
+    res.send(true);
+
+    } else 
+        res.status(404).send({
+            message: `Cannot update appointment with id=${appId}`,
+        });
+    })
+    .catch((err) => {
+        res.status(500).send({
+            message: `Error updating appointment with id=${appId}`
+         });
+    });
+};
+
+exports.findAllAttended = (req, res) => {
+    Appointment.find({ attended: true })
+        .then((data) => {
+            res.send(data);
+        })
+        .catch((err) => {
+            res.status(500).send({
+                message: err.message || "Some error occurred while retrieving Appointments.",
+            });
+        });
+};
