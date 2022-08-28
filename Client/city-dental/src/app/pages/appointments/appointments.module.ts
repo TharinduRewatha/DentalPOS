@@ -11,6 +11,8 @@ import { AppointmentsPage } from './appointments.page';
 import { NgCalendarModule  } from 'ionic2-calendar';
 import { CalModalPageModule } from '../modals/cal-modal/cal-modal.module';
 
+import { Ng2SearchPipeModule } from 'ng2-search-filter';
+
 
 
 @NgModule({
@@ -20,7 +22,8 @@ import { CalModalPageModule } from '../modals/cal-modal/cal-modal.module';
     IonicModule,
     AppointmentsPageRoutingModule,
     NgCalendarModule,
-    CalModalPageModule
+    CalModalPageModule,
+    Ng2SearchPipeModule
   ],
   declarations: [AppointmentsPage]
 })

@@ -24,6 +24,8 @@ export class AppointmentsPage implements OnInit {
   selectedDate: Date;
   alldayLabel:any = ""
 
+  filterTerm:any = ""
+
   @ViewChild(CalendarComponent) myCal: CalendarComponent;
 
   //Api related variable
