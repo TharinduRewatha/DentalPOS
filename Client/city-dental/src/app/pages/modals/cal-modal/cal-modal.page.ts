@@ -24,7 +24,8 @@ export class CalModalPage implements AfterViewInit {
     Date:null,
     startTime: null,
     endTime: null,
-    allDay: false
+    allDay: false,
+    appointedDoctor:''
   };
 
   alldayLabel:any = ""
@@ -97,9 +98,5 @@ export class CalModalPage implements AfterViewInit {
       this.event.startTime = startTime;
       this.event.endTime = endTime;
       this.event.Date = startTime;
-  }
-
-  getDate(){
-    console.log(this.selectedDate);
   }
 }

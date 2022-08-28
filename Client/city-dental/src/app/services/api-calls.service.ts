@@ -12,6 +12,7 @@ export class appointment {
   patName: string;
   phoneNumber: string;
   date: string;
+  doctor: string;
 }
 
 @Injectable({
@@ -40,6 +41,10 @@ export class ApiCallsService {
 
   createAppointment(appointment: appointment): Observable<any> {
     return this.httpClient.post<appointment>(this.appointmentsEndpoint, JSON.stringify(appointment), this.httpOptions)
+  }
+
+  updateAppointment(id): Observable<any> {
+    return this.httpClient.put(this.appointmentsEndpoint + id.replace(/\s/g, '') + "/updateattend", this.httpOptions)
   }
 
   sendSMS(phonenumber:any,msg:any): Observable<any> {

@@ -14,15 +14,29 @@
  
 <ion-content>
   <ion-item>
-    <ion-label style="font-weight: bold;" position="stacked">Patient Name</ion-label>
+    <ion-label style="font-weight: bold;" position="stacked">Patient Name : </ion-label>
     <ion-input tpye="text" [(ngModel)]="event.patName"></ion-input>
   </ion-item>
   <ion-item>
-    <ion-label style="font-weight: bold;" position="stacked">Mobile Number</ion-label>
+    <ion-label style="font-weight: bold;" position="stacked">Mobile Number : </ion-label>
     <ion-input tpye="text" [(ngModel)]="event.phoneNumber"></ion-input>
   </ion-item>
   <ion-item>
-    <ion-label position="stacked" style="font-weight: bold;">Appointment Date (select from the calendar)</ion-label>
+    <ion-label style="font-weight: bold;" position="stacked">Appointed Doctor : </ion-label>
+    <br/>
+    <ion-list>
+      <ion-item>
+        <ion-select interface="popover" placeholder="Select doctor" [(ngModel)]="event.appointedDoctor">
+          <ion-select-option value="doc01">doc01</ion-select-option>
+          <ion-select-option value="doc02">doc02</ion-select-option>
+          <ion-select-option value="doc03">doc03</ion-select-option>
+        </ion-select>
+      </ion-item>
+    </ion-list>
+  </ion-item>
+
+  <ion-item>
+    <ion-label position="stacked" style="font-weight: bold;">Appointment Date (select from the calendar) : </ion-label>
     <ion-label position="stacked">{{event.startTime}}</ion-label>
     <br/>
   </ion-item>

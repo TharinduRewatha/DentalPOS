@@ -34,7 +34,8 @@ export class AppointmentsPage implements OnInit {
   _appointment:appointment = {
     patName:"",
     phoneNumber:"",
-    date:""
+    date:"",
+    doctor:""
   }
   //end
 
@@ -55,6 +56,7 @@ export class AppointmentsPage implements OnInit {
     this.apicalls.getAppointments()
       .subscribe(
         (response) => {
+          this.eventSource = [];
           this.returnedAppointments = response;
           
           this.returnedAppointments.forEach(e => {
@@ -77,13 +79,13 @@ export class AppointmentsPage implements OnInit {
               0,
               date.getMinutes() + endMinute
           );
-            
+           
            this.eventSource.push({
               title: e.patName,
               startTime: startTime,
               endTime: endTime,
               allDay: false,
-              desc:e.phoneNumber
+              desc:e.phoneNumber + " | " + e.doctor + " | " + e.aId  + " | " + e.attended
             });
           });
           this.myCal.loadEvents();
@@ -93,15 +95,16 @@ export class AppointmentsPage implements OnInit {
         });
   }
 
-  createAppointment(patName:string,mobile:string,date:string){
+  createAppointment(patName:string,mobile:string,date:string,doctor:string){
     this._appointment.patName = patName;
     this._appointment.phoneNumber = mobile;
     this._appointment.date = date;
+    this._appointment.doctor = doctor;
 
     this.apicalls.createAppointment(this._appointment)
       .subscribe(
         (response) => {                         
-          //console.log(response);
+          this.getAppointments();
         },
         (error) => {          
           console.error('Request failed with error');
@@ -140,13 +143,46 @@ export class AppointmentsPage implements OnInit {
     const start = formatDate(event.startTime, 'medium', this.locale);
     const end = formatDate(event.endTime, 'medium', this.locale);
 
-    const alert = await this.alertCtrl.create({
-      header: event.title,
-      subHeader: event.desc,
-      message: 'From: ' + start + '<br><br>To: ' + end,
-      buttons: ['OK'],
-    });
-    alert.present();
+    var splitted = event.desc.split("|"); //number // doctor //aID //attended stat
+    var splittedTime = start.split(",");
+
+    if(JSON.parse(splitted[3]) == true){
+      const alert = await this.alertCtrl.create({
+        message: "Patient Name : " + event.title + '<br><br>' + "Mobile Number : " + splitted[0] + '<br><br>' +'Time: ' + splittedTime[2] + '<br><br>' +'IsAttended: ' + splitted[3],
+        cssClass: 'alert_css',
+        buttons: ['Cancel'],
+      });
+      alert.present();
+    }else{
+      const alert = await this.alertCtrl.create({
+        message: "Patient Name : " + event.title + '<br><br>' + "Mobile Number : " + splitted[0] + '<br><br>' +'Time: ' + splittedTime[2] + '<br><br>' +'IsAttended: ' + splitted[3],
+        cssClass: 'alert_css',
+        buttons: [
+          {
+            text: 'Cancel',
+            role: 'cancel',
+            handler: () => {
+              
+            },
+          },
+          {
+            text: 'Set as Attended',
+            cssClass: 'alert-button-confirm',
+            role: 'confirm',
+            handler: () => {
+              this.apicalls.updateAppointment(splitted[2]).subscribe(
+                (response) => {            
+                    this.getAppointments();      
+                },
+                (error) => {          
+                  console.error('Request failed with error');           
+                });
+            },
+          },
+        ],
+      });
+      alert.present();
+    }
   }
 
 
@@ -166,15 +202,7 @@ export class AppointmentsPage implements OnInit {
    
     modal.onDidDismiss().then((result) => {
       if (result.data && result.data.event) {
-        this.eventSource.push({
-          title: result.data.event.patName,
-          startTime: result.data.event.startTime,
-          endTime: result.data.event.endTime,
-          allDay: false,
-          desc: result.data.event.phoneNumber,
-        });
-        this.createAppointment(result.data.event.patName,result.data.event.phoneNumber,result.data.event.Date);
-        this.myCal.loadEvents();
+        this.createAppointment(result.data.event.patName,result.data.event.phoneNumber,result.data.event.Date,result.data.event.appointedDoctor);
       }
     });
   }
