@@ -58,6 +58,10 @@ export class ApiCallsService {
     return this.httpClient.get(this.appointmentsEndpoint+"all")
   }
 
+  getAppointmentByDate(date): Observable<any> {
+    return this.httpClient.get(this.appointmentsEndpoint + "appbydate/" + date.slice(1,-1).trim())
+  }
+
   createAppointment(appointment: appointment): Observable<any> {
     return this.httpClient.post<appointment>(this.appointmentsEndpoint, JSON.stringify(appointment), this.httpOptions)
   }

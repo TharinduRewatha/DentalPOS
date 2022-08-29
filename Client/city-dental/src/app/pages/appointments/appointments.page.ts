@@ -25,11 +25,16 @@ export class AppointmentsPage implements OnInit {
   alldayLabel:any = ""
 
   filterTerm:any = ""
+  filterTermTodays:any = ""
 
   @ViewChild(CalendarComponent) myCal: CalendarComponent;
 
   //Api related variable
   returnedAppointments = [];
+  _returnedAppointmentsToday = [];
+  _returnedAppointmentsByDate = [];
+
+  today = new Date();
 
   _appointment:appointment = {
     patName:"",
@@ -97,6 +102,17 @@ export class AppointmentsPage implements OnInit {
         });
   }
 
+  getAppointmentByDate(today){
+    this.apicalls.getAppointmentByDate(today)
+    .subscribe(
+      (response) => {
+        console.log(response);    
+      },
+      (error) => {
+        console.error('Request failed with error');
+      });
+  }
+
   createAppointment(patName:string,mobile:string,date:string,doctor:string){
     this._appointment.patName = patName;
     this._appointment.phoneNumber = mobile;
@@ -116,7 +132,8 @@ export class AppointmentsPage implements OnInit {
         })
     
     let smsNumber = "94" + mobile.substring(1);
-    this.apicalls.sendSMS(smsNumber,"test msg")
+    let msg = `Hello ${ patName }, your appointment has been sheduled on ${date}.\n\n Thank you.`
+    this.apicalls.sendSMS(smsNumber,msg)
         .subscribe(
           (response) => {
             //console.log(response);
