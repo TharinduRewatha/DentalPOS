@@ -13,6 +13,10 @@ export class appointment {
   phoneNumber: string;
   date: string;
   doctor: string;
+  nic :string;
+  address :string;
+  treatment :string;
+  amount : number;
 }
 
 @Injectable({

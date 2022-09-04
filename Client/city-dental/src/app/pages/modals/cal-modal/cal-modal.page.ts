@@ -25,7 +25,11 @@ export class CalModalPage implements AfterViewInit {
     startTime: null,
     endTime: null,
     allDay: false,
-    appointedDoctor:''
+    appointedDoctor:'',
+    nic:'',
+    address:'',
+    treatment:'',
+    amount:0
   };
 
   alldayLabel:any = ""

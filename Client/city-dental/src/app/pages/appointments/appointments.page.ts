@@ -40,7 +40,11 @@ export class AppointmentsPage implements OnInit {
     patName:"",
     phoneNumber:"",
     date:"",
-    doctor:""
+    doctor:"",
+    nic:"",
+    address:"",
+    treatment:"",
+    amount:0
   }
   //end
 
@@ -113,11 +117,15 @@ export class AppointmentsPage implements OnInit {
       });
   }
 
-  createAppointment(patName:string,mobile:string,date:string,doctor:string){
+  createAppointment(patName:string,mobile:string,date:string,doctor:string,nic:string,address:string,treatment:string,amount:number){
     this._appointment.patName = patName;
     this._appointment.phoneNumber = mobile;
     this._appointment.date = date;
     this._appointment.doctor = doctor;
+    this._appointment.nic = nic;
+    this._appointment.address = address;
+    this._appointment.treatment = treatment;
+    this._appointment.amount = amount;
 
     this.apicalls.presentLoading("creating appointment");
 
@@ -224,7 +232,16 @@ export class AppointmentsPage implements OnInit {
    
     modal.onDidDismiss().then((result) => {
       if (result.data && result.data.event) {
-        this.createAppointment(result.data.event.patName,result.data.event.phoneNumber,result.data.event.Date,result.data.event.appointedDoctor);
+        this.createAppointment(
+          result.data.event.patName,
+          result.data.event.phoneNumber,
+          result.data.event.Date,
+          result.data.event.appointedDoctor,
+          result.data.event.nic,
+          result.data.event.address,
+          result.data.event.treatment,
+          result.data.event.amount
+          );
       }
     });
   }
