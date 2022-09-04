@@ -95,8 +95,8 @@ export class AppointmentsPage implements OnInit {
               startTime: startTime,
               endTime: endTime,
               allDay: false,
-              desc:e.phoneNumber + " | " + e.doctor + " | " + e.aId  + " | " + e.attended
-            });
+              desc:e.phoneNumber + " | " + e.doctor + " | " + e.aId  + " | " + e.attended + " | " + e.nic + " | " + e.address + " | " + e.treatment + " | " + e.amount
+            }); 
           });
           this.myCal.loadEvents();
           this.apicalls.loadingController.getTop().then(v => v ? this.apicalls.loadingController.dismiss() : null);
@@ -178,14 +178,14 @@ export class AppointmentsPage implements OnInit {
 
     if(JSON.parse(splitted[3]) == true){
       const alert = await this.alertCtrl.create({
-        message: "Patient Name : " + event.title + '<br><br>' + "Mobile Number : " + splitted[0] + '<br><br>' +'Time: ' + splittedTime[2] + '<br><br>' +'Patient Attended: ' + "Yes",
-        cssClass: 'alert_css',
-        buttons: ['Cancel'],
-      });
-      alert.present();
-    }else{
-      const alert = await this.alertCtrl.create({
-        message: "Patient Name : " + event.title + '<br><br>' + "Mobile Number : " + splitted[0] + '<br><br>' +'Time: ' + splittedTime[2] + '<br><br>' +'Patient Attended: ' + "No",
+        message: "Patient Name : " + event.title + '<br><br>' +
+          "Mobile Number : " + splitted[0] + '<br><br>' +
+          "NIC : " + splitted[4] + '<br><br>' + 
+          "address : " + splitted[5] + '<br><br>' +
+          "treatment : " + splitted[6] + '<br><br>' +
+          'Time: ' + splittedTime[2] + '<br><br>' +
+          'Charged Prize: Rs.' + splittedTime[7] + '<br><br>' +
+          'Patient Attended: ' + "Yes",
         cssClass: 'alert_css',
         buttons: [
           {
@@ -196,7 +196,48 @@ export class AppointmentsPage implements OnInit {
             },
           },
           {
-            text: 'Set as Attended',
+            text: 'Update Payment',
+            cssClass: 'alert-button-confirm',
+            role: 'confirm',
+            handler: () => {
+              this.apicalls.updateAppointment(splitted[2]).subscribe(
+                (response) => {            
+                    this.getAppointments();      
+                },
+                (error) => {          
+                  console.error('Request failed with error');           
+                });
+            },
+          },
+        ],
+      });
+      alert.present();
+    }else{
+      const alert = await this.alertCtrl.create({
+        message: "Patient Name : " + event.title + '<br><br>' + 
+        "Mobile Number : " + splitted[0] + '<br><br>' +
+        "NIC : " + splitted[4] + '<br><br>' + 
+        "address : " + splitted[5] + '<br><br>' +
+        "treatment : " + splitted[6] + '<br><br>' +
+        'Time: ' + splittedTime[2] + '<br><br>' +
+        'Patient Attended: ' + "No",
+        cssClass: 'alert_css',
+        inputs: [
+          {
+            name: 'Amount',
+            placeholder: 'Payment'
+          }
+        ],
+        buttons: [
+          {
+            text: 'Cancel',
+            role: 'cancel',
+            handler: () => {
+              
+            },
+          },
+          {
+            text: 'Set Payment',
             cssClass: 'alert-button-confirm',
             role: 'confirm',
             handler: () => {
