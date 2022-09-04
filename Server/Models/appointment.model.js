@@ -15,6 +15,10 @@ module.exports = (mongoose) => {
         appId : Number,
         date: Date,
         doctor :["Doc 1", "Doc 2", "Doc 3"],
+        nic : String,
+        address : String,
+        treatment : String,
+        amount : Number,
         attended: Boolean,
         _active: Boolean
     })

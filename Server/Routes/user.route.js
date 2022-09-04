@@ -23,9 +23,6 @@ module.exports = function(app) {
         controller.cashierBoard
     )
 
-
-
-
     router.delete("/:username", controller.DeleteFromUser)
 
     router.put("/:username/:password", controller.updatePasswordByUserName)

@@ -15,6 +15,10 @@ exports.create = (req, res) => {
         date: req.body.date,
         time: req.body.time,
         appId : req.body.appId,
+        nic : req.body.nic,
+        address : req.body.address,
+        treatment : req.body.treatment,
+        amount : req.body.amount,
         attended : false,
         doctor : req.body.doctor,
         _active: true
@@ -76,8 +80,12 @@ exports.AppointmentFromId = (req, res) => {
             let appointment = {
                 patName: data[0].patName,
                 phoneNumber:data[0].phoneNumber,
-                time:data[0].time,
                 date:data[0].date,
+                address:data[0].address,
+                nic:data[0].nic,
+                doctor:data[0].doctor,
+                treatment:data[0].treatment,
+                amount:data[0].amount,
                 _active:data[0]._active,
             };
             res.send(appointment)
@@ -148,29 +156,45 @@ exports.DeleteFromAppointmentId = (req, res) => {
         })
 }
 
-exports.SearchAppWithDate = (req, res) =>{
-    const date = req.params.date;
-    var condition = date ? {
-        date: date,
-        _active: true,
-    } : {};
 
-    Appointment.find(condition)
-    .then(data => {
-        let appointment = {
-            patName: data[0].patName,
-            phoneNumber:data[0].phoneNumber,
-            date:data[0].date,
-            _active:data[0]._active,
-        };
-        res.send(appointment)
-    })
-    .catch(err => {
-        res.status(500).send({
-            message: err.message || "Some error occurred while retrieving appointments."
+exports.SearchAppWithDate = (req, res) => {
+    let appvar = {}
+    let appDet = []
+    var dateTimeAfter = new Date(req.params.dateTimeAfter)
+    dateTimeAfter.setDate(dateTimeAfter.getDate() + 1)
+    console.log(dateTimeAfter)
+    Appointment.find({
+            dateTime: {
+                $gte: req.params.dateTimeBefore,
+                $lt: dateTimeAfter,
+
+            },
+            _active: true
         })
-    })
+        .then((data) => {
+            data.forEach(app => {
+                appvar = {
+                    patName: app.patName,
+                    phoneNumber:app.phoneNumber,
+                    date:app.date,
+                    address:app.address,
+                    nic:app.nic,
+                    doctor:app.doctor,
+                    treatment:app.treatment,
+                    amount:app.amount,
+                    _active:app._active,
+                }
+                appDet.push(appvar)
+            })
+            res.send(appDet)
+        })
+        .catch((err) => {
+            res.status(500).send({
+                message: err.message || "Some error occurred while retrieving appointments.",
+            })
+        })
 }
+
 
 exports.updateTheAttendedStatus = (req, res) => {
 
