@@ -5,6 +5,7 @@ import { catchError, tap } from 'rxjs/operators';
 import { LoadingController,AlertController, Platform } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
+import { json } from 'express';
 
 
 //MODALS
@@ -62,16 +63,16 @@ export class ApiCallsService {
     return this.httpClient.get(this.appointmentsEndpoint+"all")
   }
 
-  getAppointmentByDate(date): Observable<any> {
-    return this.httpClient.get(this.appointmentsEndpoint + "appbydate/" + date.slice(1,-1).trim())
+  getAppointmentByDate(date,datePlus): Observable<any> {
+    return this.httpClient.get(this.appointmentsEndpoint + "appbydate/" + date.slice(1,-1).trim() + "/" + datePlus)
   }
 
   createAppointment(appointment: appointment): Observable<any> {
     return this.httpClient.post<appointment>(this.appointmentsEndpoint, JSON.stringify(appointment), this.httpOptions)
   }
 
-  updateAppointment(id): Observable<any> {
-    return this.httpClient.put(this.appointmentsEndpoint + id.replace(/\s/g, '') + "/updateattend", this.httpOptions)
+  updateAppointment(id,amount): Observable<any> {
+    return this.httpClient.put(this.appointmentsEndpoint + id.replace(/\s/g, '') + "/" + amount + "/updateattend", this.httpOptions)
   }
 
   sendSMS(phonenumber:any,msg:any): Observable<any> {

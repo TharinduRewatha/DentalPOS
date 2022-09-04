@@ -35,6 +35,7 @@ export class AppointmentsPage implements OnInit {
   _returnedAppointmentsByDate = [];
 
   today = new Date();
+  tomorrow = new Date(this.today)
 
   _appointment:appointment = {
     patName:"",
@@ -57,6 +58,7 @@ export class AppointmentsPage implements OnInit {
 
   ngOnInit() {
     this.getAppointments();
+    this.getAppointmentByDate(JSON.stringify(this.today));
   }
 
   //API calls service region
@@ -107,7 +109,8 @@ export class AppointmentsPage implements OnInit {
   }
 
   getAppointmentByDate(today){
-    this.apicalls.getAppointmentByDate(today)
+    this.tomorrow.setDate(this.tomorrow.getDate() + 1)
+    this.apicalls.getAppointmentByDate(today,this.tomorrow)
     .subscribe(
       (response) => {
         console.log(response);    
@@ -184,9 +187,15 @@ export class AppointmentsPage implements OnInit {
           "address : " + splitted[5] + '<br><br>' +
           "treatment : " + splitted[6] + '<br><br>' +
           'Time: ' + splittedTime[2] + '<br><br>' +
-          'Charged Prize: Rs.' + splittedTime[7] + '<br><br>' +
+          'Payment: Rs.' + splitted[7] + '<br><br>' +
           'Patient Attended: ' + "Yes",
         cssClass: 'alert_css',
+        inputs: [
+          {
+            name: 'amount',
+            placeholder: 'Edit Payment'
+          }
+        ],
         buttons: [
           {
             text: 'Cancel',
@@ -199,8 +208,8 @@ export class AppointmentsPage implements OnInit {
             text: 'Update Payment',
             cssClass: 'alert-button-confirm',
             role: 'confirm',
-            handler: () => {
-              this.apicalls.updateAppointment(splitted[2]).subscribe(
+            handler: data => {
+              this.apicalls.updateAppointment(splitted[2],data.amount).subscribe(
                 (response) => {            
                     this.getAppointments();      
                 },
@@ -224,7 +233,7 @@ export class AppointmentsPage implements OnInit {
         cssClass: 'alert_css',
         inputs: [
           {
-            name: 'Amount',
+            name: 'amount',
             placeholder: 'Payment'
           }
         ],
@@ -240,8 +249,8 @@ export class AppointmentsPage implements OnInit {
             text: 'Set Payment',
             cssClass: 'alert-button-confirm',
             role: 'confirm',
-            handler: () => {
-              this.apicalls.updateAppointment(splitted[2]).subscribe(
+            handler: data => {
+              this.apicalls.updateAppointment(splitted[2],data.amount).subscribe(
                 (response) => {            
                     this.getAppointments();      
                 },
