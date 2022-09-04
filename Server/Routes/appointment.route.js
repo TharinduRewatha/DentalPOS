@@ -19,11 +19,11 @@ module.exports = (app) => {
 
     router.get("/appbydate/:dateTimeBefore/:dateTimeAfter",appointment.SearchAppWithDate)
 
-    router.put("/:aId/updateattend",appointment.updateTheAttendedStatus)
+    router.put("/:aId/:amount/updateattend",appointment.updateTheAttendedStatus)
 
     router.get("/allattended",appointment.findAllAttended)
 
-    router.put("/:iId/:amount", appointment.updateAmountById)
+   // router.put("/:iId/:amount", appointment.updateAmountById)
 
     app.use("/api/appointment", router)
 };
