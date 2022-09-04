@@ -23,5 +23,7 @@ module.exports = (app) => {
 
     router.get("/allattended",appointment.findAllAttended)
 
+    router.put("/:iId/:amount", appointment.updateAmountById)
+
     app.use("/api/appointment", router)
 };

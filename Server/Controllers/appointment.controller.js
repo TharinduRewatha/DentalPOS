@@ -229,3 +229,25 @@ exports.findAllAttended = (req, res) => {
             });
         });
 };
+
+exports.updateAmountById = (req, res) => {
+    const id = req.params.iId
+    const amount = req.params.amount
+
+    Appointment.findOneAndUpdate({ _id: id }, { $set: { amount: amount } })
+        .then(data => {
+
+            if (data) {
+                res.send(true);
+
+            } else res.status(404).send({
+                message: `Cannot update apointmnet with price=${price}. Maybe apointmnet was not found!`,
+            });
+        })
+        .catch((err) => {
+            res.status(500).send({
+                message: "Error updating apointmnet with price=" + price
+            })
+        })
+}
+
