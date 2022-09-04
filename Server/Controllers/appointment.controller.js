@@ -195,12 +195,24 @@ exports.SearchAppWithDate = (req, res) => {
         })
 }
 
+exports.findAllAttended = (req, res) => {
+    Appointment.find({ attended: true })
+        .then((data) => {
+            res.send(data);
+        })
+        .catch((err) => {
+            res.status(500).send({
+                message: err.message || "Some error occurred while retrieving Appointments.",
+            });
+        });
+};
 
 exports.updateTheAttendedStatus = (req, res) => {
 
     const appId = req.params.aId;
+    const amount = req.params.amount
 
-    Appointment.findOneAndUpdate({ _id: appId },{ $set: { attended: true } })
+    Appointment.findOneAndUpdate({ _id: appId },{ $set: { attended: true }},{$set:{amount:amount}})
     .then(data => {
 
     if (data) {
@@ -218,36 +230,4 @@ exports.updateTheAttendedStatus = (req, res) => {
     });
 };
 
-exports.findAllAttended = (req, res) => {
-    Appointment.find({ attended: true })
-        .then((data) => {
-            res.send(data);
-        })
-        .catch((err) => {
-            res.status(500).send({
-                message: err.message || "Some error occurred while retrieving Appointments.",
-            });
-        });
-};
-
-exports.updateAmountById = (req, res) => {
-    const id = req.params.iId
-    const amount = req.params.amount
-
-    Appointment.findOneAndUpdate({ _id: id }, { $set: { amount: amount } })
-        .then(data => {
-
-            if (data) {
-                res.send(true);
-
-            } else res.status(404).send({
-                message: `Cannot update apointmnet with price=${price}. Maybe apointmnet was not found!`,
-            });
-        })
-        .catch((err) => {
-            res.status(500).send({
-                message: "Error updating apointmnet with price=" + price
-            })
-        })
-}
 
