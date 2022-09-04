@@ -212,6 +212,7 @@ exports.updateTheAttendedStatus = (req, res) => {
     const appId = req.params.aId;
     const amount = req.params.amount
 
+    if (Appointment.find({attended:false})){
     Appointment.findOneAndUpdate({ _id: appId },{ $set: { attended: true }},{$set:{amount:amount}})
     .then(data => {
 
@@ -228,6 +229,24 @@ exports.updateTheAttendedStatus = (req, res) => {
             message: `Error updating appointment with id=${appId}`
          });
     });
+}else
+Appointment.findOneAndUpdate({ _id: appId },{$set:{amount:amount}})
+    .then(data => {
+
+    if (data) {
+    res.send(true);
+
+    } else 
+        res.status(404).send({
+            message: `Cannot update appointment with id=${appId}`,
+        });
+    })
+    .catch((err) => {
+        res.status(500).send({
+            message: `Error updating appointment with id=${appId}`
+         });
+    });
+
 };
 
 
