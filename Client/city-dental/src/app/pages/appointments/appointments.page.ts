@@ -259,7 +259,8 @@ export class AppointmentsPage implements OnInit {
             handler: data => {
               this.apicalls.updateAppointment(splitted[2],data.amount).subscribe(
                 (response) => {            
-                    this.getAppointments();      
+                    this.getAppointments();  
+                    this.getAppointmentToday(JSON.stringify(this.today));    
                 },
                 (error) => {          
                   console.error('Request failed with error');           
@@ -300,7 +301,8 @@ export class AppointmentsPage implements OnInit {
             handler: data => {
               this.apicalls.updateAppointment(splitted[2],data.amount).subscribe(
                 (response) => {            
-                    this.getAppointments();      
+                    this.getAppointments(); 
+                    this.getAppointmentToday(JSON.stringify(this.today));     
                 },
                 (error) => {          
                   console.error('Request failed with error');           
