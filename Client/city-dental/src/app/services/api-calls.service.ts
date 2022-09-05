@@ -26,7 +26,7 @@ export class appointment {
 export class ApiCallsService {
 
   appointmentsEndpoint = 'http://localhost:8096/api/appointment/';
-  smsEndpoint = 'https://app.notify.lk/api/v1/send?user_id=23335&api_key=R2vtYcOYv5DkMzXYb8gT&sender_id=NotifyDEMO&to' //=[Phone number]&message=[Messsege]
+  smsEndpoint = 'https://app.notify.lk/api/v1/send?user_id=23335&api_key=R2vtYcOYv5DkMzXYb8gT&sender_id=CITY DENTAL&to' //=[Phone number]&message=[Messsege]
 
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -63,8 +63,9 @@ export class ApiCallsService {
     return this.httpClient.get(this.appointmentsEndpoint+"all")
   }
 
-  getAppointmentByDate(date,datePlus): Observable<any> {
-    return this.httpClient.get(this.appointmentsEndpoint + "appbydate/" + date.slice(1,-1).trim() + "/" + datePlus)
+  getAppointmentByDate(dateOne,dateTwo): Observable<any> {
+    console.log(this.appointmentsEndpoint + "appbydate/" + dateOne.slice(1,-1).trim() + "/" + dateTwo.slice(1,-1).trim());
+    return this.httpClient.get(this.appointmentsEndpoint + "appbydate/" + dateOne.slice(1,-1).trim() + "/" + dateTwo.slice(1,-1).trim())
   }
 
   createAppointment(appointment: appointment): Observable<any> {
@@ -72,7 +73,7 @@ export class ApiCallsService {
   }
 
   updateAppointment(id,amount): Observable<any> {
-    return this.httpClient.put(this.appointmentsEndpoint + id.replace(/\s/g, '') + "/" + amount + "/updateattend", this.httpOptions)
+    return this.httpClient.put(this.appointmentsEndpoint +  "updateattend/" + id.replace(/\s/g, '') + "/" + amount, this.httpOptions)
   }
 
   sendSMS(phonenumber:any,msg:any): Observable<any> {

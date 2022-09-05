@@ -58,6 +58,7 @@
         [monthviewEventDetailTemplate] = "monthviewDefaultEventDetailTemplate"
       >
       </calendar>
+      
     
       <ng-template #template let-view="view" let-row="row" let-col="col" let-showEventDetail="showEventDetail" let-selectedDate="selectedDate" let-noEventsLabel="noEventsLabel">
         <div [class.with-event]="view.dates[row*7+col].events.length">
@@ -70,17 +71,41 @@
     
       <ng-template #monthviewDefaultEventDetailTemplate let-showEventDetail="showEventDetail" let-selectedDate="selectedDate" let-noEventsLabel="alldayLabel">
         <ion-list class="event-detail-container" has-bouncing="false" *ngIf="showEventDetail" overflow-scroll="false">
-            <ion-item *ngFor="let event of selectedDate?.events |filter:filterTerm;" (click)="onEventSelected(event)">
+          <ion-grid>
+              <ion-row>
+                <ion-col style="text-align: center;font-weight: bold;" size="3">
+                  Time
+                </ion-col>
+                <ion-col style="text-align: center;font-weight: bold;" size="3">
+                  Name
+                </ion-col>
+                <ion-col style="text-align: center;font-weight: bold;" size="3">
+                  Phone Number
+                </ion-col>
+                <ion-col style="text-align: center;font-weight: bold;" size="3">
+                  Treatment
+                </ion-col>
+              </ion-row>
+              <ion-card *ngFor="let event of selectedDate?.events |filter:filterTerm;" (click)="onEventSelected(event)">
+                <ion-row style="display: flex;justify-content: center;">
+                  <ion-col style="text-align: center;">
                     <span *ngIf="!event.allDay" class="monthview-eventdetail-timecolumn">{{event.startTime|date: 'HH:mm'}}
-                        -
-                        {{event.endTime|date: 'HH:mm'}}
+                      <br>to<br>
+                      {{event.endTime|date: 'HH:mm'}}
                     </span>
-                <span *ngIf="event.allDay" class="monthview-eventdetail-timecolumn">All day</span>
-                <span class="event-detail">  |  {{event.title}}</span>
-            </ion-item>
-            <ion-item *ngIf="selectedDate?.events.length==0">
-                <div class="no-events-label">{{noEventsLabel}}</div>
-            </ion-item>
+                  </ion-col>
+                  <ion-col style="text-align: center;">
+                    {{event.title}}
+                  </ion-col>
+                  <ion-col style="text-align: center;">
+                    {{event.desc.split("|")[0]}}
+                  </ion-col>
+                  <ion-col style="text-align: center;">
+                    {{event.desc.split("|")[6]}}
+                  </ion-col>
+                </ion-row>
+              </ion-card>
+          </ion-grid>
         </ion-list>
     </ng-template>
     </ion-card>
@@ -90,15 +115,37 @@
     <ion-col size="4">
       <ion-card>
         <ion-card-header>
-          <ion-card-subtitle>{{today}}</ion-card-subtitle>
+          <ion-card-subtitle>{{getSplittedDate()}}</ion-card-subtitle>
           <ion-card-title>Today's Appointments</ion-card-title>
           <ion-searchbar placeholder="Search appointments.." [(ngModel)]="filterTermTodays" animated="true" showCancelButton= "focus" ></ion-searchbar>
         </ion-card-header>
       
         <ion-card-content>
-          <ion-card *ngFor="let i of _returnedAppointmentsToday |filter:filterTermTodays;">
+          <ion-grid>
+            <ion-row>
+              <ion-col style="text-align: center;font-weight: bold;" size="6">
+                Time
+              </ion-col>
+              <ion-col style="text-align: center;font-weight: bold;" size="6">
+                Name
+              </ion-col>
+            </ion-row>
             
-          </ion-card>
+            <ion-card *ngFor="let i of  _returnedAppointmentsByDate |filter:filterTermTodays;" >
+              <ion-row>
+                <ion-col style="text-align: center;" size="6">
+                  <span  class="monthview-eventdetail-timecolumn">{{i.startTime|date: 'HH:mm'}}
+                    <br>to<br>
+                    {{i.endTime|date: 'HH:mm'}}
+                  </span>
+                </ion-col>
+                <ion-col style="text-align: center;" size="6">
+                  {{i.title}}
+                </ion-col>
+              </ion-row>
+            </ion-card>
+
+          </ion-grid>
         </ion-card-content>
       </ion-card>
     </ion-col>

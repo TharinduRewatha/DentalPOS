@@ -35,7 +35,7 @@ export class AppointmentsPage implements OnInit {
   _returnedAppointmentsByDate = [];
 
   today = new Date();
-  tomorrow = new Date(this.today)
+  yesterday = new Date(this.today)
 
   _appointment:appointment = {
     patName:"",
@@ -109,8 +109,8 @@ export class AppointmentsPage implements OnInit {
   }
 
   getAppointmentByDate(today){
-    this.tomorrow.setDate(this.tomorrow.getDate() + 1)
-    this.apicalls.getAppointmentByDate(today,this.tomorrow)
+    this.yesterday.setDate(this.yesterday.getDate() - 1)
+    this.apicalls.getAppointmentByDate(today,JSON.stringify(this.yesterday))
     .subscribe(
       (response) => {
         console.log(response);    
@@ -143,7 +143,8 @@ export class AppointmentsPage implements OnInit {
         })
     
     let smsNumber = "94" + mobile.substring(1);
-    let msg = `Hello ${ patName }, your appointment has been sheduled on ${date}.\n\n Thank you.`
+    let _date = new Date(date);
+    let msg = `Hello ${ patName }, your appointment has been sheduled on ${_date.toDateString()}.\n\n Thank you.`
     this.apicalls.sendSMS(smsNumber,msg)
         .subscribe(
           (response) => {
@@ -294,6 +295,11 @@ export class AppointmentsPage implements OnInit {
           );
       }
     });
+  }
+
+  getSplittedDate(){
+    let today = this.today.toDateString();
+    return today;
   }
 
 }
