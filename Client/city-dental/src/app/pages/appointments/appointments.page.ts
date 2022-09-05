@@ -27,6 +27,8 @@ export class AppointmentsPage implements OnInit {
   filterTerm:any = ""
   filterTermTodays:any = ""
 
+
+
   @ViewChild(CalendarComponent) myCal: CalendarComponent;
 
   //Api related variable
@@ -54,6 +56,8 @@ export class AppointmentsPage implements OnInit {
   }
 
   isLoggedIn:boolean = false;
+  username:string =  "admin" //temporary
+  pwd:string = "12345" //temporary
   //end
 
   constructor(
@@ -337,19 +341,24 @@ export class AppointmentsPage implements OnInit {
   }
 
   Login(){
-    this.apicalls.presentLoading("Loggin In");
-    this.apicalls.login(this._loginData)
-      .subscribe(
-        (response) => {                         
-          console.log(response);
-          //this.isLoggedIn = true
-          //this.getAppointments();
-          //this.getAppointmentToday(JSON.stringify(this.today));
-          this.apicalls.loadingController.getTop().then(v => v ? this.apicalls.loadingController.dismiss() : null);
-        },
-        (error) => {          
-          console.error('Request failed with error');
-        })
-  }
+  //   this.apicalls.presentLoading("Loggin In");
+  //   this.apicalls.login(this._loginData)
+  //     .subscribe(
+  //       (response) => {                         
+  //         console.log(response);
+  //         //this.isLoggedIn = true
+  //         //this.getAppointments();
+  //         //this.getAppointmentToday(JSON.stringify(this.today));
+  //         this.apicalls.loadingController.getTop().then(v => v ? this.apicalls.loadingController.dismiss() : null);
+  //       },
+  //       (error) => {          
+  //         console.error('Request failed with error');
+  //       })
+      if(this._loginData.username == this.username && this._loginData.password == this.pwd){
+        this.isLoggedIn = true
+        this.getAppointments();
+        this.getAppointmentToday(JSON.stringify(this.today));
+      }
+   }
 
 }
