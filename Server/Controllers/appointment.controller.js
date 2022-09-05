@@ -183,7 +183,8 @@ exports.SearchAppWithDate = (req, res) => {
                     doctor:app.doctor,
                     treatment:app.treatment,
                     amount:app.amount,
-                    aId :app.aId,
+                    appId : app.appId,
+                    aId : app._id,
                     attended: app.attended,
                     _active:app._active,
                 }

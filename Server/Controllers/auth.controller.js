@@ -1,7 +1,7 @@
-const config = require("../config/auth.config")
+const config = require("../Config/auth.config")
     //const db = require("../models")
-const User = require("../models/user.model")
-const Role = require("../models/role.model")
+const User = require("../Models/user.model")
+const Role = require("../Models/role.model")
     //const Role = db.role
 
 var jwt = require("jsonwebtoken")
