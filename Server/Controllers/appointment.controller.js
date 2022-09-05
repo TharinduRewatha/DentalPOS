@@ -166,8 +166,8 @@ exports.SearchAppWithDate = (req, res) => {
     console.log(dateTimeAfter)
     Appointment.find({
         date: {
-            $gt: dateTimeBefore,
-            $lt: dateTimeAfter
+            $gte: dateTimeBefore,
+            $lte: dateTimeAfter
         },
             _active: true
         })
@@ -183,6 +183,8 @@ exports.SearchAppWithDate = (req, res) => {
                     doctor:app.doctor,
                     treatment:app.treatment,
                     amount:app.amount,
+                    aId :app.aId,
+                    attended: app.attended,
                     _active:app._active,
                 }
                 appDet.push(appvar)
