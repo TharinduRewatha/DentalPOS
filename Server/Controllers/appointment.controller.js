@@ -167,7 +167,6 @@ exports.SearchAppWithDate = (req, res) => {
             dateTime: {
                 $gte: req.params.dateTimeBefore,
                 $lt: dateTimeAfter,
-
             },
             _active: true
         })
@@ -212,8 +211,7 @@ exports.updateTheAttendedStatus = (req, res) => {
     const appId = req.params.aId
     const amount = req.params.amount
 
-    if (Appointment.find({ _id: appId },{attended:false})){
-    Appointment.findOneAndUpdate({ _id: appId },{ $set: { attended: true }},{$set:{amount:amount}})
+    Appointment.findOneAndUpdate({ _id: appId },{ $set: { attended: true,amount:amount}})
     .then(data => {
 
     if (data) {
@@ -229,24 +227,6 @@ exports.updateTheAttendedStatus = (req, res) => {
             message: `Error updating appointment with id=${appId}`
          });
     });
-}else
-Appointment.findOneAndUpdate({ _id: appId },{$set:{amount:amount}})
-    .then(data => {
-
-    if (data) {
-    res.send(true);
-
-    } else 
-        res.status(404).send({
-            message: `Cannot update appointment with id=${appId}`,
-        });
-    })
-    .catch((err) => {
-        res.status(500).send({
-            message: `Error updating appointment with id=${appId}`
-         });
-    });
-
 };
 
 
