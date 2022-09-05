@@ -221,6 +221,7 @@ export class AppointmentsPage implements OnInit {
 
     var splitted = event.desc.split("|"); //number // doctor //aID //attended stat
     var splittedTime = start.split(",");
+  
 
     if(JSON.parse(splitted[3]) == true){
       const alert = await this.alertCtrl.create({
