@@ -34,7 +34,7 @@ export class AppointmentsPage implements OnInit {
   //Api related variable
   returnedAppointments = [];
   _returnedAppointmentsToday = [];
-  _returnedAppointmentsByDate = [];
+ // _returnedAppointmentsByDate = [];
 
   today = new Date();
   yesterday = new Date(this.today)
@@ -125,6 +125,7 @@ export class AppointmentsPage implements OnInit {
     this.apicalls.getAppointmentByDate(JSON.stringify(this.yesterday),today)
     .subscribe(
       (response) => {
+        this._returnedAppointmentsToday = [];
         response.forEach(e => {
           const date = new Date(e.date);
           let startTime: Date;
@@ -176,6 +177,7 @@ export class AppointmentsPage implements OnInit {
       .subscribe(
         (response) => {                         
           this.getAppointments();
+          this.getAppointmentToday(JSON.stringify(this.today));
           this.apicalls.loadingController.dismiss();
         },
         (error) => {          
