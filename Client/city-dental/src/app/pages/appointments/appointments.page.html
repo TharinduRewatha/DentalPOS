@@ -131,7 +131,7 @@
               </ion-col>
             </ion-row>
             
-            <ion-card *ngFor="let i of  _returnedAppointmentsByDate |filter:filterTermTodays;" >
+            <ion-card *ngFor="let i of  _returnedAppointmentsToday |filter:filterTermTodays;" (click)="onEventSelected(i)" >
               <ion-row>
                 <ion-col style="text-align: center;" size="6">
                   <span  class="monthview-eventdetail-timecolumn">{{i.startTime|date: 'HH:mm'}}

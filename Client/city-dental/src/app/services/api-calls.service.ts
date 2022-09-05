@@ -64,7 +64,6 @@ export class ApiCallsService {
   }
 
   getAppointmentByDate(dateOne,dateTwo): Observable<any> {
-    console.log(this.appointmentsEndpoint + "appbydate/" + dateOne.slice(1,-1).trim() + "/" + dateTwo.slice(1,-1).trim());
     return this.httpClient.get(this.appointmentsEndpoint + "appbydate/" + dateOne.slice(1,-1).trim() + "/" + dateTwo.slice(1,-1).trim())
   }
 

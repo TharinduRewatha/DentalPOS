@@ -58,7 +58,8 @@ export class AppointmentsPage implements OnInit {
 
   ngOnInit() {
     this.getAppointments();
-    this.getAppointmentByDate(JSON.stringify(this.today));
+    this.today.setHours(24,0,0,0);
+    this.getAppointmentToday(JSON.stringify(this.today));
   }
 
   //API calls service region
@@ -108,12 +109,40 @@ export class AppointmentsPage implements OnInit {
         });
   }
 
-  getAppointmentByDate(today){
-    this.yesterday.setDate(this.yesterday.getDate() - 1)
-    this.apicalls.getAppointmentByDate(today,JSON.stringify(this.yesterday))
+  getAppointmentToday(today){
+    this.yesterday.setHours(0,0,0,0);
+    this.apicalls.getAppointmentByDate(JSON.stringify(this.yesterday),today)
     .subscribe(
       (response) => {
-        console.log(response);    
+        response.forEach(e => {
+          const date = new Date(e.date);
+          let startTime: Date;
+          let endTime: Date;
+          let startMinute = date.getHours() * 60;
+          let endMinute = 30 + startMinute;
+          startTime = new Date(
+            date.getFullYear(),
+            date.getMonth(),
+            date.getDate(),
+            0,
+            date.getMinutes() + startMinute
+          );
+          endTime = new Date(
+            date.getFullYear(),
+            date.getMonth(),
+            date.getDate(),
+            0,
+            date.getMinutes() + endMinute
+        );
+         
+         this._returnedAppointmentsToday.push({
+            title: e.patName,
+            startTime: startTime,
+            endTime: endTime,
+            allDay: false,
+            desc:e.phoneNumber + " | " + e.doctor + " | " + e.aId  + " | " + e.attended + " | " + e.nic + " | " + e.address + " | " + e.treatment + " | " + e.amount
+          }); 
+        });   
       },
       (error) => {
         console.error('Request failed with error');
@@ -265,8 +294,6 @@ export class AppointmentsPage implements OnInit {
       alert.present();
     }
   }
-
-
 
   removeEvents() {
     this.eventSource = [];
