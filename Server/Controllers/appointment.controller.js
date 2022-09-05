@@ -160,14 +160,14 @@ exports.DeleteFromAppointmentId = (req, res) => {
 exports.SearchAppWithDate = (req, res) => {
     let appvar = {}
     let appDet = []
-    var dateTimeAfter = new Date(req.params.dateTimeAfter)
+    var dateTimeAfter = req.params.dateTimeAfter
     var dateTimeBefore = req.params.dateTimeBefore
-    dateTimeAfter.setDate(dateTimeAfter.getDate())
+    //dateTimeAfter.setDate(dateTimeAfter.getDate())
     console.log(dateTimeAfter)
     Appointment.find({
         date: {
-            $gte: dateTimeBefore,
-            $lte: dateTimeAfter
+            $gt: dateTimeBefore,
+            $lt: dateTimeAfter
         },
             _active: true
         })
