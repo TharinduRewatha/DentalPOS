@@ -64,10 +64,11 @@ function initial() {
     })
 }
 
-
+require("./Routes/auth.route")(app)
 require("./Routes/user.route")(app)
 //require("./Routes/patient.route")(app)
 require("./Routes/appointment.route")(app)
+
 
 app.get("/", (req, res) => {
     res.json("Welcome to DentalPOS")
