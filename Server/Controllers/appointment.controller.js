@@ -209,10 +209,10 @@ exports.findAllAttended = (req, res) => {
 
 exports.updateTheAttendedStatus = (req, res) => {
 
-    const appId = req.params.aId;
+    const appId = req.params.aId
     const amount = req.params.amount
 
-    if (Appointment.find({attended:false})){
+    if (Appointment.find({ _id: appId },{attended:false})){
     Appointment.findOneAndUpdate({ _id: appId },{ $set: { attended: true }},{$set:{amount:amount}})
     .then(data => {
 
