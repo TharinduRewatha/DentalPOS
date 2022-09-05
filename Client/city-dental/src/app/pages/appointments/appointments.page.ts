@@ -186,7 +186,7 @@ export class AppointmentsPage implements OnInit {
     
     let smsNumber = "94" + mobile.substring(1);
     let _date = new Date(date);
-    let msg = `Hello ${ patName }, your appointment has been sheduled on (පරික්ෂා කරන වේලාව) ${_date.toDateString()}.\n\n Thank you.`
+    let msg = `Hello ${ patName }, your appointment has been sheduled on ${_date.toDateString()}.\n\n Thank you.`
     this.apicalls.sendSMS(smsNumber,msg)
         .subscribe(
           (response) => {
