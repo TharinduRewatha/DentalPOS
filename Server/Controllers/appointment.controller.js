@@ -161,16 +161,18 @@ exports.SearchAppWithDate = (req, res) => {
     let appvar = {}
     let appDet = []
     var dateTimeAfter = new Date(req.params.dateTimeAfter)
-    dateTimeAfter.setDate(dateTimeAfter.getDate() + 1)
+    var dateTimeBefore = req.params.dateTimeBefore
+    dateTimeAfter.setDate(dateTimeAfter.getDate())
     console.log(dateTimeAfter)
     Appointment.find({
-            dateTime: {
-                $gte: req.params.dateTimeBefore,
-                $lt: dateTimeAfter,
-            },
+        date: {
+            $gte: dateTimeBefore,
+            $lt: dateTimeAfter
+        },
             _active: true
         })
         .then((data) => {
+            console.log(data);
             data.forEach(app => {
                 appvar = {
                     patName: app.patName,
@@ -211,7 +213,7 @@ exports.updateTheAttendedStatus = (req, res) => {
     const appId = req.params.aId
     const amount = req.params.amount
 
-    Appointment.findOneAndUpdate({ _id: appId },{ $set: { attended: true,amount:amount}})
+    Appointment.findOneAndUpdate({ _id: appId },{ $set: { attended: true ,amount:amount}})
     .then(data => {
 
     if (data) {
@@ -228,5 +230,3 @@ exports.updateTheAttendedStatus = (req, res) => {
          });
     });
 };
-
-
