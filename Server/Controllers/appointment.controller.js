@@ -167,7 +167,7 @@ exports.SearchAppWithDate = (req, res) => {
     Appointment.find({
         date: {
             $gte: dateTimeBefore,
-            $lt: dateTimeAfter
+            $lte: dateTimeAfter
         },
             _active: true
         })
