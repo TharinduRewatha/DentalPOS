@@ -233,3 +233,32 @@ exports.updateTheAttendedStatus = (req, res) => {
          });
     });
 };
+
+exports.appointmentRevenue = (req, res) => {
+    revenueCount = {}
+
+    var endDate = new Date(req.params.endDate)
+    endDate.setDate(endDate.getDate() + 1)
+    console.log(endDate)
+    Appointment.find({
+        date: {
+            $gte: new Date(req.params.startDate),
+            $lt: endDate
+        },
+            attended: true
+        })
+        .then((data) => {
+            data.forEach(revenue => {
+                console.log(revenue)
+                // console.log("A revenue of " + revenue.amount + "has happened in " + revenue.brandName)
+                // revenueCount[revenue.brandName] = revenueCount[revenue.brandName] ? revenueCount[revenue.brandName] + revenue.discPrice * revenue.qty : revenue.discPrice * revenue.qty
+
+            })
+            res.send(revenueCount)
+        })
+        .catch((err) => {
+            res.status(500).send({
+                message: err.message || "Some error with report"
+            })
+        })
+}
