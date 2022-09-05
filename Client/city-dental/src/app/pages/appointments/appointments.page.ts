@@ -27,7 +27,7 @@ export class AppointmentsPage implements OnInit {
   filterTerm:any = ""
   filterTermTodays:any = ""
 
-
+  isMobile:boolean = false;
 
   @ViewChild(CalendarComponent) myCal: CalendarComponent;
 
@@ -71,6 +71,10 @@ export class AppointmentsPage implements OnInit {
     //this.getAppointments();
     this.today.setHours(24,0,0,0);
     //this.getAppointmentToday(JSON.stringify(this.today));
+
+    if(window.screen.width <= 700){
+      this.isMobile = true;
+    }
   }
 
   //API calls service region
@@ -359,8 +363,10 @@ export class AppointmentsPage implements OnInit {
   //       })
       if(this._loginData.username == this.username && this._loginData.password == this.pwd){
         this.isLoggedIn = true
-        this.getAppointments();
-        this.getAppointmentToday(JSON.stringify(this.today));
+        if(!this.isMobile){
+          this.getAppointments();
+          this.getAppointmentToday(JSON.stringify(this.today));
+        }
       }
    }
 
