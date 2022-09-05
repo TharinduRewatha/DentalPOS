@@ -20,6 +20,11 @@ export class appointment {
   amount : number;
 }
 
+export class loginData {
+  username:string;
+  password:string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -27,6 +32,7 @@ export class ApiCallsService {
 
   appointmentsEndpoint = 'http://localhost:8096/api/appointment/';
   smsEndpoint = 'https://app.notify.lk/api/v1/send?user_id=23335&api_key=R2vtYcOYv5DkMzXYb8gT&sender_id=CITY DENTAL&to' //=[Phone number]&message=[Messsege]
+  loginEndpoint = 'http://localhost:8096/api/auth/signin/';
 
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -78,6 +84,12 @@ export class ApiCallsService {
   sendSMS(phonenumber:any,msg:any): Observable<any> {
     return this.httpClient.get(this.smsEndpoint+ "=" + phonenumber + "&message=" + msg)
   }
+
+  login(data: loginData): Observable<any> {
+    return this.httpClient.post<loginData>(this.loginEndpoint, JSON.stringify(data), this.httpOptions)
+  }
+
+
 
   
 }

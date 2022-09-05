@@ -3,7 +3,7 @@ import { CalendarComponent } from 'ionic2-calendar';
 import { AlertController, ModalController } from '@ionic/angular';
 import { formatDate } from '@angular/common';
 import { CalModalPage } from '../modals/cal-modal/cal-modal.page';
-import { ApiCallsService, appointment } from 'src/app/services/api-calls.service';
+import { ApiCallsService, appointment, loginData } from 'src/app/services/api-calls.service';
 import { CalendarMode } from 'ionic2-calendar/calendar';
 import * as e from 'express';
 
@@ -47,6 +47,13 @@ export class AppointmentsPage implements OnInit {
     treatment:"",
     amount:0
   }
+
+  _loginData:loginData = {
+    username: "",
+    password:""
+  }
+
+  isLoggedIn:boolean = false;
   //end
 
   constructor(
@@ -57,9 +64,9 @@ export class AppointmentsPage implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.getAppointments();
+    //this.getAppointments();
     this.today.setHours(24,0,0,0);
-    this.getAppointmentToday(JSON.stringify(this.today));
+    //this.getAppointmentToday(JSON.stringify(this.today));
   }
 
   //API calls service region
@@ -327,6 +334,22 @@ export class AppointmentsPage implements OnInit {
   getSplittedDate(){
     let today = this.today.toDateString();
     return today;
+  }
+
+  Login(){
+    this.apicalls.presentLoading("Loggin In");
+    this.apicalls.login(this._loginData)
+      .subscribe(
+        (response) => {                         
+          console.log(response);
+          //this.isLoggedIn = true
+          //this.getAppointments();
+          //this.getAppointmentToday(JSON.stringify(this.today));
+          this.apicalls.loadingController.getTop().then(v => v ? this.apicalls.loadingController.dismiss() : null);
+        },
+        (error) => {          
+          console.error('Request failed with error');
+        })
   }
 
 }

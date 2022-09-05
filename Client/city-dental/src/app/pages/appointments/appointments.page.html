@@ -1,4 +1,38 @@
-<ion-content>
+<ion-content *ngIf="!isLoggedIn">
+  <ion-slide>
+    <div class="contaier-login">
+        <ion-grid>
+            <ion-row>
+                <ion-col>
+                    <ion-list>
+                        <ion-item>
+                            <ion-icon name="person-outline"></ion-icon>
+                            <ion-input [(ngModel)]="_loginData.username" name="user" type="text" required placeholder="username"></ion-input>
+                        </ion-item>
+                        <br />
+                        <ion-item>
+                            <ion-icon name="lock-closed-outline"></ion-icon>
+                            <ion-input [(ngModel)]="_loginData.password" name="password" type="password" required placeholder="password"></ion-input>
+                        </ion-item>
+  
+                    </ion-list>
+                </ion-col>
+            </ion-row>
+            <ion-row>
+                <ion-col>
+                    <ion-button type="submit" fill="solid" expand="full" (click) = "Login()">
+                        Login
+                    </ion-button>
+                </ion-col>
+            </ion-row>
+
+        </ion-grid>
+    </div>
+  </ion-slide>
+  </ion-content>
+  
+
+<ion-content *ngIf="isLoggedIn">
   <!-- <ion-segment [(ngModel)]="calendar.mode">
     <ion-segment-button value="month">
       <ion-label>Month</ion-label>
