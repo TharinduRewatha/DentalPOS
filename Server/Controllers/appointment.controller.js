@@ -18,6 +18,7 @@ exports.create = (req, res) => {
         nic : req.body.nic,
         address : req.body.address,
         treatment : req.body.treatment,
+        dob :req.body.dob,
         amount : req.body.amount,
         attended : false,
         doctor : req.body.doctor,
@@ -261,4 +262,4 @@ exports.appointmentRevenue = (req, res) => {
                 message: err.message || "Some error with report"
             })
         })
-}
+} 
