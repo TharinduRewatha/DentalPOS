@@ -1,0 +1,62 @@
+<ion-toolbar color="primary">
+  <ion-buttons slot="start">
+    <ion-button (click)="close()">
+      <ion-icon name="close" slot="icon-only"></ion-icon>
+    </ion-button>
+  </ion-buttons>
+  <!-- <ion-title>{{ viewTitle }}</ion-title> -->
+  <ion-buttons slot="end">
+    <ion-button (click)="save()">
+      <ion-icon name="checkmark" slot="icon-only"></ion-icon>
+    </ion-button>
+  </ion-buttons>
+</ion-toolbar>
+ 
+<ion-content>
+  <ion-item>
+    <ion-label style="font-weight: bold;" position="stacked">Patient Name : </ion-label>
+    <ion-input tpye="text" [(ngModel)]="event.patName"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label style="font-weight: bold;" position="stacked">Mobile Number : </ion-label>
+    <ion-input tpye="text" [(ngModel)]="event.phoneNumber"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label style="font-weight: bold;" position="stacked">NIC : </ion-label>
+    <ion-input tpye="text" [(ngModel)]="event.nic"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label style="font-weight: bold;" position="stacked">Address : </ion-label>
+    <ion-input tpye="text" [(ngModel)]="event.address"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label style="font-weight: bold;" position="stacked">Treatment : </ion-label>
+    <ion-input tpye="text" [(ngModel)]="event.treatment"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label style="font-weight: bold;" position="stacked">Appointed Doctor : </ion-label>
+    <br/>
+    <ion-list>
+      <ion-item>
+        <ion-select interface="popover" placeholder="Select doctor" [(ngModel)]="event.appointedDoctor">
+          <ion-select-option value="doc01">doc01</ion-select-option>
+          <ion-select-option value="doc02">doc02</ion-select-option>
+          <ion-select-option value="doc03">doc03</ion-select-option>
+        </ion-select>
+      </ion-item>
+    </ion-list>
+  </ion-item>
+
+  <ion-item>
+    <ion-label position="stacked" style="font-weight: bold;">Appointment Date (select from the calendar) : </ion-label>
+    <ion-label position="stacked">{{event.startTime}}</ion-label>
+    <br/>
+  </ion-item>
+
+  <br/>
+
+  <div style="margin-left: 20%;">
+    <ion-datetime [(ngModel)]="selectedDate" (ionChange)="onDateSelected()"></ion-datetime>
+  </div>
+
+</ion-content>

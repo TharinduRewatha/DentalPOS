@@ -1,0 +1,191 @@
+<ion-content>
+<ion-content *ngIf="!isLoggedIn">
+  <ion-slide>
+    <div class="contaier-login">
+        <ion-grid>
+            <ion-row>
+                <ion-col>
+                    <ion-list>
+                        <ion-item>
+                            <ion-icon name="person-outline"></ion-icon>
+                            <ion-input [(ngModel)]="_loginData.username" name="user" type="text" required placeholder="username"></ion-input>
+                        </ion-item>
+                        <br />
+                        <ion-item>
+                            <ion-icon name="lock-closed-outline"></ion-icon>
+                            <ion-input [(ngModel)]="_loginData.password" name="password" type="text" required placeholder="password"></ion-input>
+                        </ion-item>
+  
+                    </ion-list>
+                </ion-col>
+            </ion-row>
+            <ion-row>
+                <ion-col>
+                    <ion-button type="submit" fill="solid" expand="full" (click) = "Login()">
+                        Login
+                    </ion-button>
+                </ion-col>
+            </ion-row>
+
+        </ion-grid>
+    </div>
+  </ion-slide>
+  </ion-content>
+  
+
+<ion-content *ngIf="isLoggedIn">
+  <!-- <ion-segment [(ngModel)]="calendar.mode">
+    <ion-segment-button value="month">
+      <ion-label>Month</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="week">
+      <ion-label>Week</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="day">
+      <ion-label>Day</ion-label>
+    </ion-segment-button>
+  </ion-segment> -->
+  <ion-grid *ngIf="!isMobile">
+  <ion-row>
+    <ion-col size="8">
+      <ion-card>
+      <ion-row>
+        <ion-col size="6">
+          <ion-button (click)="openCalModal()" style="margin-top:0.75em;">
+            Add Appointment<ion-icon name="add" slot="icon-only"></ion-icon>
+          </ion-button>
+        </ion-col>
+        <ion-col size="6">
+          <ion-searchbar placeholder="Search appointments.." [(ngModel)]="filterTerm" animated="true" showCancelButton= "focus" ></ion-searchbar>
+        </ion-col>
+      </ion-row>
+      <br/>
+    
+      <ion-row style="margin-left:10em;">
+        <!-- Move back one screen of the slides -->
+        <ion-col size="1">
+          <ion-button fill="clear" (click)="back()">
+            <ion-icon name="arrow-back" slot="icon-only"></ion-icon>
+          </ion-button>
+        </ion-col>
+     
+        <ion-col size="8" class="ion-text-center">
+          <h2>{{ viewTitle }}</h2>
+        </ion-col>
+     
+        <!-- Move forward one screen of the slides -->
+        <ion-col size="3">
+          <ion-button fill="clear" (click)="next()">
+            <ion-icon name="arrow-forward" slot="icon-only"></ion-icon>
+          </ion-button>
+        </ion-col>
+      </ion-row>
+      <br/>
+    
+      <calendar
+        [eventSource]="eventSource" 
+        [calendarMode]="calendar.mode"
+        [currentDate]="calendar.currentDate"
+        (onEventSelected)="onEventSelected($event)"
+        (onTitleChanged)="onViewTitleChanged($event)"
+        [monthviewDisplayEventTemplate]="template"
+        [allDayLabel]="alldayLabel"
+        [monthviewEventDetailTemplate] = "monthviewDefaultEventDetailTemplate"
+      >
+      </calendar>
+      
+    
+      <ng-template #template let-view="view" let-row="row" let-col="col" let-showEventDetail="showEventDetail" let-selectedDate="selectedDate" let-noEventsLabel="noEventsLabel">
+        <div [class.with-event]="view.dates[row*7+col].events.length">
+          {{view.dates[row*7+col].label}}
+          <div class="indicator-container">
+            <div class="event-indicator" *ngFor="let e of view.dates[row*7+col].events"></div>
+          </div>
+        </div>
+      </ng-template>
+    
+      <ng-template #monthviewDefaultEventDetailTemplate let-showEventDetail="showEventDetail" let-selectedDate="selectedDate" let-noEventsLabel="alldayLabel">
+        <ion-list class="event-detail-container" has-bouncing="false" *ngIf="showEventDetail" overflow-scroll="false">
+          <ion-grid>
+              <ion-row>
+                <ion-col style="text-align: center;font-weight: bold;" size="3">
+                  Time
+                </ion-col>
+                <ion-col style="text-align: center;font-weight: bold;" size="3">
+                  Name
+                </ion-col>
+                <ion-col style="text-align: center;font-weight: bold;" size="3">
+                  Phone Number
+                </ion-col>
+                <ion-col style="text-align: center;font-weight: bold;" size="3">
+                  Treatment
+                </ion-col>
+              </ion-row>
+              <ion-card *ngFor="let event of selectedDate?.events |filter:filterTerm;" (click)="onEventSelected(event)">
+                <ion-row style="display: flex;justify-content: center;">
+                  <ion-col style="text-align: center;">
+                    <span *ngIf="!event.allDay" class="monthview-eventdetail-timecolumn">{{event.startTime|date: 'HH:mm'}}
+                      <br>to<br>
+                      {{event.endTime|date: 'HH:mm'}}
+                    </span>
+                  </ion-col>
+                  <ion-col style="text-align: center;">
+                    {{event.title}}
+                  </ion-col>
+                  <ion-col style="text-align: center;">
+                    {{event.desc.split("|")[0]}}
+                  </ion-col>
+                  <ion-col style="text-align: center;">
+                    {{event.desc.split("|")[6]}}
+                  </ion-col>
+                </ion-row>
+              </ion-card>
+          </ion-grid>
+        </ion-list>
+    </ng-template>
+    </ion-card>
+    </ion-col>
+
+
+    <ion-col size="4">
+      <ion-card>
+        <ion-card-header>
+          <ion-card-subtitle>{{getSplittedDate()}}</ion-card-subtitle>
+          <ion-card-title>Today's Appointments</ion-card-title>
+          <ion-searchbar placeholder="Search appointments.." [(ngModel)]="filterTermTodays" animated="true" showCancelButton= "focus" ></ion-searchbar>
+        </ion-card-header>
+      
+        <ion-card-content>
+          <ion-grid>
+            <ion-row>
+              <ion-col style="text-align: center;font-weight: bold;" size="6">
+                Time
+              </ion-col>
+              <ion-col style="text-align: center;font-weight: bold;" size="6">
+                Name
+              </ion-col>
+            </ion-row>
+            
+            <ion-card *ngFor="let i of  _returnedAppointmentsToday |filter:filterTermTodays;" (click)="onEventSelected(i)" >
+              <ion-row>
+                <ion-col style="text-align: center;" size="6">
+                  <span  class="monthview-eventdetail-timecolumn">{{i.startTime|date: 'HH:mm'}}
+                    <br>to<br>
+                    {{i.endTime|date: 'HH:mm'}}
+                  </span>
+                </ion-col>
+                <ion-col style="text-align: center;" size="6">
+                  {{i.title}}
+                </ion-col>
+              </ion-row>
+            </ion-card>
+
+          </ion-grid>
+        </ion-card-content>
+      </ion-card>
+    </ion-col>
+  </ion-row>
+  </ion-grid>
+
+</ion-content>
+</ion-content>
