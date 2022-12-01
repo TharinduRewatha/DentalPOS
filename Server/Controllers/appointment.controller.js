@@ -268,7 +268,7 @@ exports.editAppbyDob = (req,res) =>{
     const id = req.params.aId
     const dob = req.params.dob
 
-    Appointment.findOneAndUpdate({ _id: id }, { $set: { dob: dob } })
+    Appointment.findOneAndUpdate({ _id: id }, { $set: { nic: dob } })
         .then(data => {
 
             if (data) {
