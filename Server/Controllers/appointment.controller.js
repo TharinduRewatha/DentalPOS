@@ -263,3 +263,24 @@ exports.appointmentRevenue = (req, res) => {
             })
         })
 } 
+
+exports.editAppbyDob = (req,res) =>{
+    const id = req.params.aId
+    const dob = req.params.dob
+
+    Appointment.findOneAndUpdate({ _id: id }, { $set: { dob: dob } })
+        .then(data => {
+
+            if (data) {
+                res.send(true);
+
+            } else res.status(404).send({
+                message: `Cannot update appointment with price=${dob}. Maybe appointment was not found!`,
+            });
+        })
+        .catch((err) => {
+            res.status(500).send({
+                message: "Error updating appointment with dob=" + dob
+            })
+        })
+}

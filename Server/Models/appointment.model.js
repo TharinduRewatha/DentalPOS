@@ -18,6 +18,7 @@ module.exports = (mongoose) => {
         nic : String,
         address : String,
         treatment : String,
+        dob : Date,
         amount : Number,
         attended: Boolean,
         _active: Boolean
